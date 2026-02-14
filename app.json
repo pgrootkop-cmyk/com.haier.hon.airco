@@ -59,7 +59,8 @@
     "xlarge": "/assets/images/xlarge.png"
   },
   "author": {
-    "name": "p.grootkop"
+    "name": "p.grootkop",
+    "email": "p.grootkop@gmail.com"
   },
   "source": "https://github.com/pgrootkop-cmyk/com.haier.hon.airco",
   "homepage": "https://github.com/pgrootkop-cmyk/com.haier.hon.airco",
