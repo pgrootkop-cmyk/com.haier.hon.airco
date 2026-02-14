@@ -108,7 +108,7 @@
       ]
     }
   ],
-  "platforms": ["local", "cloud"],
+  "platforms": ["local"],
   "connectivity": ["cloud"],
   "images": {
     "small": "/drivers/aircon/assets/images/small.png",
