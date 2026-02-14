@@ -1,0 +1,27 @@
+{
+  "title": {
+    "en": "Set swing to ...",
+    "nl": "Stel zwenken in op ..."
+  },
+  "titleFormatted": {
+    "en": "Set swing to [[swing]]",
+    "nl": "Stel zwenken in op [[swing]]"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=aircon"
+    },
+    {
+      "type": "dropdown",
+      "name": "swing",
+      "values": [
+        { "id": "off", "label": { "en": "Off", "nl": "Uit" } },
+        { "id": "vertical", "label": { "en": "Vertical", "nl": "Verticaal" } },
+        { "id": "horizontal", "label": { "en": "Horizontal", "nl": "Horizontaal" } },
+        { "id": "both", "label": { "en": "Both", "nl": "Beide" } }
+      ]
+    }
+  ]
+}

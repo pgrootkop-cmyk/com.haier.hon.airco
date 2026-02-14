@@ -1,0 +1,25 @@
+{
+  "title": {
+    "en": "Turn silent mode on or off",
+    "nl": "Zet stille modus aan of uit"
+  },
+  "titleFormatted": {
+    "en": "Turn silent mode [[enabled]]",
+    "nl": "Zet stille modus [[enabled]]"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=aircon"
+    },
+    {
+      "type": "dropdown",
+      "name": "enabled",
+      "values": [
+        { "id": "true", "label": { "en": "On", "nl": "Aan" } },
+        { "id": "false", "label": { "en": "Off", "nl": "Uit" } }
+      ]
+    }
+  ]
+}

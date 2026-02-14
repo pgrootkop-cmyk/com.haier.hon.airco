@@ -1,0 +1,24 @@
+{
+  "name": "com.haier.hon.airco",
+  "version": "0.0.1",
+  "description": "Control Haier Air Conditioners via the hOn cloud API",
+  "main": "app.js",
+  "scripts": {
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "echo \"No tests yet\" && exit 0"
+  },
+  "author": {
+    "name": "p.grootkop"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "node-fetch": "^2.7.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.57.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

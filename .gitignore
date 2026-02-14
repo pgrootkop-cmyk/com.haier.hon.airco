@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Homey
+env.json
+.homeycompose/.cache/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+
+# Build artifacts
+dist/
+build/
+
+# Test coverage
+coverage/
+
+
+# Added by Homey CLI
+/.homeybuild/

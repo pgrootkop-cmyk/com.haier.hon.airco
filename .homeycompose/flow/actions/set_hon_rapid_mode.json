@@ -1,0 +1,25 @@
+{
+  "title": {
+    "en": "Turn rapid mode on or off",
+    "nl": "Zet snelle modus aan of uit"
+  },
+  "titleFormatted": {
+    "en": "Turn rapid mode [[enabled]]",
+    "nl": "Zet snelle modus [[enabled]]"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=aircon"
+    },
+    {
+      "type": "dropdown",
+      "name": "enabled",
+      "values": [
+        { "id": "true", "label": { "en": "On", "nl": "Aan" } },
+        { "id": "false", "label": { "en": "Off", "nl": "Uit" } }
+      ]
+    }
+  ]
+}

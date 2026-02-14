@@ -1,0 +1,118 @@
+{
+  "name": {
+    "en": "Air Conditioner",
+    "nl": "Airconditioner"
+  },
+  "class": "thermostat",
+  "capabilities": [
+    "measure_temperature",
+    "target_temperature",
+    "onoff",
+    "hon_hvac_mode",
+    "hon_fan_speed",
+    "hon_swing_mode",
+    "hon_eco_pilot",
+    "hon_silent_mode",
+    "hon_rapid_mode",
+    "hon_sleep_mode",
+    "hon_eco_mode",
+    "hon_health_mode",
+    "hon_screen_display",
+    "hon_echo_mode",
+    "measure_temperature.indoor",
+    "measure_temperature.outdoor"
+  ],
+  "capabilitiesOptions": {
+    "target_temperature": {
+      "min": 10,
+      "max": 30,
+      "step": 1
+    },
+    "measure_temperature": {
+      "title": {
+        "en": "Indoor Temperature",
+        "nl": "Binnentemperatuur"
+      }
+    },
+    "measure_temperature.indoor": {
+      "title": {
+        "en": "Indoor Temperature",
+        "nl": "Binnentemperatuur"
+      }
+    },
+    "measure_temperature.outdoor": {
+      "title": {
+        "en": "Outdoor Temperature",
+        "nl": "Buitentemperatuur"
+      }
+    }
+  },
+  "energy": {
+    "approximation": {
+      "usageOn": 1500,
+      "usageOff": 5
+    }
+  },
+  "pair": [
+    {
+      "id": "oauth"
+    },
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "prev": "oauth",
+        "next": "add_devices"
+      },
+      "options": {
+        "title": {
+          "en": "Select your Air Conditioner",
+          "nl": "Selecteer je Airconditioner"
+        }
+      }
+    },
+    {
+      "id": "add_devices",
+      "template": "add_devices"
+    }
+  ],
+  "repair": [
+    {
+      "id": "oauth"
+    }
+  ],
+  "settings": [
+    {
+      "type": "group",
+      "label": {
+        "en": "Polling",
+        "nl": "Polling"
+      },
+      "children": [
+        {
+          "id": "poll_interval",
+          "type": "number",
+          "label": {
+            "en": "Poll Interval (seconds)",
+            "nl": "Poll-interval (seconden)"
+          },
+          "hint": {
+            "en": "How often to fetch device state from the API (5-3600 seconds)",
+            "nl": "Hoe vaak de apparaatstatus wordt opgehaald via de API (5-3600 seconden)"
+          },
+          "value": 5,
+          "min": 5,
+          "max": 3600,
+          "units": "s"
+        }
+      ]
+    }
+  ],
+  "platforms": ["local", "cloud"],
+  "connectivity": ["cloud"],
+  "images": {
+    "small": "/drivers/aircon/assets/images/small.png",
+    "large": "/drivers/aircon/assets/images/large.png",
+    "xlarge": "/drivers/aircon/assets/images/xlarge.png"
+  }
+}

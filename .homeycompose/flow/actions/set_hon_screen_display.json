@@ -1,0 +1,25 @@
+{
+  "title": {
+    "en": "Turn screen display on or off",
+    "nl": "Zet schermdisplay aan of uit"
+  },
+  "titleFormatted": {
+    "en": "Turn screen display [[enabled]]",
+    "nl": "Zet schermdisplay [[enabled]]"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=aircon"
+    },
+    {
+      "type": "dropdown",
+      "name": "enabled",
+      "values": [
+        { "id": "true", "label": { "en": "On", "nl": "Aan" } },
+        { "id": "false", "label": { "en": "Off", "nl": "Uit" } }
+      ]
+    }
+  ]
+}

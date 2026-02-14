@@ -1,0 +1,45 @@
+{
+  "type": "enum",
+  "title": {
+    "en": "Fan Speed",
+    "nl": "Ventilatorsnelheid"
+  },
+  "desc": {
+    "en": "The fan speed setting",
+    "nl": "De ventilatorsnelheid instelling"
+  },
+  "uiComponent": "picker",
+  "getable": true,
+  "setable": true,
+  "insights": true,
+  "values": [
+    {
+      "id": "auto",
+      "title": {
+        "en": "Auto",
+        "nl": "Automatisch"
+      }
+    },
+    {
+      "id": "low",
+      "title": {
+        "en": "Low",
+        "nl": "Laag"
+      }
+    },
+    {
+      "id": "medium",
+      "title": {
+        "en": "Medium",
+        "nl": "Middel"
+      }
+    },
+    {
+      "id": "high",
+      "title": {
+        "en": "High",
+        "nl": "Hoog"
+      }
+    }
+  ]
+}

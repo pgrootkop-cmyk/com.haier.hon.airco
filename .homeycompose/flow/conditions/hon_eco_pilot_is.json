@@ -1,0 +1,26 @@
+{
+  "title": {
+    "en": "Eco Pilot !{{is|is not}} ...",
+    "nl": "Eco Pilot !{{is|is niet}} ..."
+  },
+  "titleFormatted": {
+    "en": "Eco Pilot !{{is|is not}} [[mode]]",
+    "nl": "Eco Pilot !{{is|is niet}} [[mode]]"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=aircon"
+    },
+    {
+      "type": "dropdown",
+      "name": "mode",
+      "values": [
+        { "id": "off", "label": { "en": "Off", "nl": "Uit" } },
+        { "id": "avoid", "label": { "en": "Avoid Me", "nl": "Vermijd mij" } },
+        { "id": "follow", "label": { "en": "Follow Me", "nl": "Volg mij" } }
+      ]
+    }
+  ]
+}

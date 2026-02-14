@@ -1,0 +1,26 @@
+{
+  "title": {
+    "en": "Set Eco Pilot to ...",
+    "nl": "Stel Eco Pilot in op ..."
+  },
+  "titleFormatted": {
+    "en": "Set Eco Pilot to [[mode]]",
+    "nl": "Stel Eco Pilot in op [[mode]]"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=aircon"
+    },
+    {
+      "type": "dropdown",
+      "name": "mode",
+      "values": [
+        { "id": "off", "label": { "en": "Off", "nl": "Uit" } },
+        { "id": "avoid", "label": { "en": "Avoid Me", "nl": "Vermijd mij" } },
+        { "id": "follow", "label": { "en": "Follow Me", "nl": "Volg mij" } }
+      ]
+    }
+  ]
+}

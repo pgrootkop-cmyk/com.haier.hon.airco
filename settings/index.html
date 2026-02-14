@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>hOn Settings</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding: 20px;
+      max-width: 400px;
+      margin: 0 auto;
+      color: #333;
+    }
+    h2 { font-size: 18px; margin-bottom: 4px; }
+    .subtitle { font-size: 12px; color: #888; margin-bottom: 16px; }
+    .card {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+    .status-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .dot.on { background: #28a745; }
+    .dot.off { background: #dc3545; }
+    .status-text {
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .info {
+      font-size: 12px;
+      color: #666;
+      line-height: 1.5;
+      margin-top: 8px;
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: white;
+      background: #dc3545;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 12px;
+    }
+    .btn:hover { background: #c82333; }
+    .msg {
+      text-align: center;
+      font-size: 12px;
+      padding: 8px;
+      border-radius: 6px;
+      margin-top: 8px;
+      display: none;
+    }
+    .msg.show { display: block; }
+    .msg.ok { background: #e8f5e9; color: #2e7d32; }
+  </style>
+</head>
+<body>
+  <h2>hOn Account</h2>
+  <p class="subtitle">Manage your Haier hOn connection</p>
+
+  <div class="card">
+    <div class="status-row">
+      <div class="dot" id="dot"></div>
+      <span class="status-text" id="statusText">Checking...</span>
+    </div>
+    <p class="info" id="info"></p>
+  </div>
+
+  <button class="btn" id="clearBtn" style="display:none">Sign Out</button>
+  <div class="msg" id="msg"></div>
+
+  <script>
+    function onHomeyReady(Homey) {
+      Homey.ready();
+
+      var dot = document.getElementById('dot');
+      var statusText = document.getElementById('statusText');
+      var info = document.getElementById('info');
+      var clearBtn = document.getElementById('clearBtn');
+      var msg = document.getElementById('msg');
+
+      Homey.get('accessToken', function(err, token) {
+        if (token) {
+          dot.classList.add('on');
+          statusText.textContent = 'Connected';
+          info.textContent = 'Your hOn account is linked. To re-authenticate, go to your device and choose Repair.';
+          clearBtn.style.display = 'block';
+        } else {
+          dot.classList.add('off');
+          statusText.textContent = 'Not connected';
+          info.textContent = 'Add a device to connect your hOn account.';
+        }
+      });
+
+      clearBtn.addEventListener('click', function() {
+        Homey.set('accessToken', null);
+        Homey.set('idToken', null);
+        Homey.set('refreshToken', null);
+        dot.className = 'dot off';
+        statusText.textContent = 'Not connected';
+        info.textContent = 'Signed out. Use Repair on your device to reconnect.';
+        clearBtn.style.display = 'none';
+        msg.textContent = 'Account cleared.';
+        msg.className = 'msg show ok';
+      });
+    }
+  </script>
+</body>
+</html>

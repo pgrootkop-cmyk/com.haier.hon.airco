@@ -1,0 +1,27 @@
+{
+  "title": {
+    "en": "Set fan speed to ...",
+    "nl": "Stel ventilatorsnelheid in op ..."
+  },
+  "titleFormatted": {
+    "en": "Set fan speed to [[speed]]",
+    "nl": "Stel ventilatorsnelheid in op [[speed]]"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=aircon"
+    },
+    {
+      "type": "dropdown",
+      "name": "speed",
+      "values": [
+        { "id": "auto", "label": { "en": "Auto", "nl": "Automatisch" } },
+        { "id": "low", "label": { "en": "Low", "nl": "Laag" } },
+        { "id": "medium", "label": { "en": "Medium", "nl": "Midden" } },
+        { "id": "high", "label": { "en": "High", "nl": "Hoog" } }
+      ]
+    }
+  ]
+}

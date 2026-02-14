@@ -1,0 +1,24 @@
+{
+  "type": "boolean",
+  "title": {
+    "en": "Beep Sound",
+    "nl": "Pieptoon"
+  },
+  "desc": {
+    "en": "Sound feedback on commands",
+    "nl": "Geluidsbevestiging bij commando's"
+  },
+  "getable": true,
+  "setable": true,
+  "uiComponent": "toggle",
+  "uiQuickAction": false,
+  "insights": true,
+  "insightsTitleTrue": {
+    "en": "Beep sound turned on",
+    "nl": "Pieptoon ingeschakeld"
+  },
+  "insightsTitleFalse": {
+    "en": "Beep sound turned off",
+    "nl": "Pieptoon uitgeschakeld"
+  }
+}

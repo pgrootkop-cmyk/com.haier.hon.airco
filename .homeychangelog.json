@@ -1,0 +1,6 @@
+{
+  "0.0.1": {
+    "en": "Initial release\n- Control air conditioners via hOn cloud API\n- HVAC modes: Auto, Cool, Heat, Dry, Fan Only, Anti-Freeze\n- Fan speed, swing direction, and temperature control\n- Eco Pilot, Silent, Rapid, Sleep, Eco, Health modes\n- Screen display and beep sound toggles\n- Indoor and outdoor temperature sensors\n- Flow cards for automations\n- Configurable polling interval",
+    "nl": "Eerste release\n- Bedien airconditioners via hOn cloud API\n- Modi: Automatisch, Koelen, Verwarmen, Ontvochtigen, Ventilator, Vorstbeveiliging\n- Ventilatorsnelheid, zwenkrichting en temperatuurregeling\n- Eco Pilot, Stil, Snel, Slaap, Eco, Gezondheid modi\n- Schermdisplay en pieptoon schakelaars\n- Binnen- en buitentemperatuur sensoren\n- Flow cards voor automatiseringen\n- Configureerbaar poll-interval"
+  }
+}

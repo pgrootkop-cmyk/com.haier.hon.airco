@@ -1,0 +1,25 @@
+{
+  "title": {
+    "en": "Turn beep sound on or off",
+    "nl": "Zet pieptoon aan of uit"
+  },
+  "titleFormatted": {
+    "en": "Turn beep sound [[enabled]]",
+    "nl": "Zet pieptoon [[enabled]]"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=aircon"
+    },
+    {
+      "type": "dropdown",
+      "name": "enabled",
+      "values": [
+        { "id": "true", "label": { "en": "On", "nl": "Aan" } },
+        { "id": "false", "label": { "en": "Off", "nl": "Uit" } }
+      ]
+    }
+  ]
+}

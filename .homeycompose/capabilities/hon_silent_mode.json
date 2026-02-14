@@ -1,0 +1,20 @@
+{
+  "type": "boolean",
+  "title": {
+    "en": "Silent Mode",
+    "nl": "Stille modus"
+  },
+  "getable": true,
+  "setable": true,
+  "uiComponent": "toggle",
+  "uiQuickAction": false,
+  "insights": true,
+  "insightsTitleTrue": {
+    "en": "Silent mode turned on",
+    "nl": "Stille modus ingeschakeld"
+  },
+  "insightsTitleFalse": {
+    "en": "Silent mode turned off",
+    "nl": "Stille modus uitgeschakeld"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "pair": {
+    "login_failed": "Login failed. Please try again.",
+    "no_devices": "No air conditioners found in your hOn account."
+  },
+  "errors": {
+    "not_authenticated": "Not authenticated. Please repair the device to reconnect.",
+    "api_unavailable": "Unable to connect to Haier servers.",
+    "command_failed": "Failed to send command to device."
+  },
+  "capability": {
+    "hon_hvac_mode": {
+      "auto": "Auto",
+      "cool": "Cool",
+      "heat": "Heat",
+      "dry": "Dry",
+      "fan_only": "Fan Only"
+    },
+    "hon_fan_speed": {
+      "auto": "Auto",
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
+    },
+    "hon_swing_mode": {
+      "off": "Off",
+      "vertical": "Vertical",
+      "horizontal": "Horizontal",
+      "both": "Both"
+    }
+  }
+}

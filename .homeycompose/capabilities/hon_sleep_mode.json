@@ -1,0 +1,20 @@
+{
+  "type": "boolean",
+  "title": {
+    "en": "Sleep Mode",
+    "nl": "Slaapmodus"
+  },
+  "getable": true,
+  "setable": true,
+  "uiComponent": "toggle",
+  "uiQuickAction": false,
+  "insights": true,
+  "insightsTitleTrue": {
+    "en": "Sleep mode turned on",
+    "nl": "Slaapmodus ingeschakeld"
+  },
+  "insightsTitleFalse": {
+    "en": "Sleep mode turned off",
+    "nl": "Slaapmodus uitgeschakeld"
+  }
+}

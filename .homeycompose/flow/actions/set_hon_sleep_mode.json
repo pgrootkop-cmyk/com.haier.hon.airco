@@ -1,0 +1,25 @@
+{
+  "title": {
+    "en": "Turn sleep mode on or off",
+    "nl": "Zet slaapmodus aan of uit"
+  },
+  "titleFormatted": {
+    "en": "Turn sleep mode [[enabled]]",
+    "nl": "Zet slaapmodus [[enabled]]"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=aircon"
+    },
+    {
+      "type": "dropdown",
+      "name": "enabled",
+      "values": [
+        { "id": "true", "label": { "en": "On", "nl": "Aan" } },
+        { "id": "false", "label": { "en": "Off", "nl": "Uit" } }
+      ]
+    }
+  ]
+}

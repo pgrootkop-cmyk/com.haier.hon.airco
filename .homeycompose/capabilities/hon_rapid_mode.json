@@ -1,0 +1,24 @@
+{
+  "type": "boolean",
+  "title": {
+    "en": "Rapid Mode",
+    "nl": "Snelle modus"
+  },
+  "desc": {
+    "en": "Fast heating or cooling boost",
+    "nl": "Snel verwarmen of koelen"
+  },
+  "getable": true,
+  "setable": true,
+  "uiComponent": "toggle",
+  "uiQuickAction": false,
+  "insights": true,
+  "insightsTitleTrue": {
+    "en": "Rapid mode turned on",
+    "nl": "Snelle modus ingeschakeld"
+  },
+  "insightsTitleFalse": {
+    "en": "Rapid mode turned off",
+    "nl": "Snelle modus uitgeschakeld"
+  }
+}

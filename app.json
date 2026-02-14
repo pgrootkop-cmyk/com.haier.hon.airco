@@ -1,0 +1,1270 @@
+{
+  "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
+  "id": "com.haier.hon.airco",
+  "version": "0.0.1",
+  "compatibility": ">=5.0.0",
+  "sdk": 3,
+  "platforms": [
+    "local",
+    "cloud"
+  ],
+  "brandColor": "#004ea2",
+  "name": {
+    "en": "Haier hOn",
+    "nl": "Haier hOn"
+  },
+  "description": {
+    "en": "Smart Climate Control",
+    "nl": "Slim Klimaatbeheer"
+  },
+  "category": [
+    "climate"
+  ],
+  "permissions": [],
+  "tags": {
+    "en": [
+      "Haier",
+      "hOn",
+      "air conditioner",
+      "airco",
+      "AC",
+      "thermostat",
+      "heat pump",
+      "climate",
+      "Candy",
+      "Hoover",
+      "HVAC",
+      "cooling",
+      "heating"
+    ],
+    "nl": [
+      "Haier",
+      "hOn",
+      "airconditioner",
+      "airco",
+      "AC",
+      "thermostaat",
+      "warmtepomp",
+      "klimaat",
+      "Candy",
+      "Hoover",
+      "HVAC",
+      "koelen",
+      "verwarmen"
+    ]
+  },
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "author": {
+    "name": "p.grootkop"
+  },
+  "source": "https://github.com/pgrootkop-cmyk/com.haier.hon.airco",
+  "homepage": "https://github.com/pgrootkop-cmyk/com.haier.hon.airco",
+  "support": "https://github.com/pgrootkop-cmyk/com.haier.hon.airco/issues",
+  "bugs": {
+    "url": "https://github.com/pgrootkop-cmyk/com.haier.hon.airco/issues"
+  },
+  "flow": {
+    "triggers": [
+      {
+        "title": {
+          "en": "The Eco Pilot mode changed",
+          "nl": "De Eco Pilot modus is gewijzigd"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=aircon"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "mode",
+            "type": "string",
+            "title": {
+              "en": "Mode",
+              "nl": "Modus"
+            },
+            "example": {
+              "en": "follow",
+              "nl": "follow"
+            }
+          }
+        ],
+        "id": "hon_eco_pilot_changed"
+      },
+      {
+        "title": {
+          "en": "The fan speed changed",
+          "nl": "De ventilatorsnelheid is gewijzigd"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=aircon"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "speed",
+            "type": "string",
+            "title": {
+              "en": "Speed",
+              "nl": "Snelheid"
+            },
+            "example": {
+              "en": "high",
+              "nl": "high"
+            }
+          }
+        ],
+        "id": "hon_fan_speed_changed"
+      },
+      {
+        "title": {
+          "en": "The HVAC mode changed",
+          "nl": "De modus is gewijzigd"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=aircon"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "mode",
+            "type": "string",
+            "title": {
+              "en": "Mode",
+              "nl": "Modus"
+            },
+            "example": {
+              "en": "cool",
+              "nl": "cool"
+            }
+          }
+        ],
+        "id": "hon_hvac_mode_changed"
+      }
+    ],
+    "conditions": [
+      {
+        "title": {
+          "en": "Eco Pilot !{{is|is not}} ...",
+          "nl": "Eco Pilot !{{is|is niet}} ..."
+        },
+        "titleFormatted": {
+          "en": "Eco Pilot !{{is|is not}} [[mode]]",
+          "nl": "Eco Pilot !{{is|is niet}} [[mode]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=aircon"
+          },
+          {
+            "type": "dropdown",
+            "name": "mode",
+            "values": [
+              {
+                "id": "off",
+                "label": {
+                  "en": "Off",
+                  "nl": "Uit"
+                }
+              },
+              {
+                "id": "avoid",
+                "label": {
+                  "en": "Avoid Me",
+                  "nl": "Vermijd mij"
+                }
+              },
+              {
+                "id": "follow",
+                "label": {
+                  "en": "Follow Me",
+                  "nl": "Volg mij"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "hon_eco_pilot_is"
+      },
+      {
+        "title": {
+          "en": "Fan speed !{{is|is not}} ...",
+          "nl": "Ventilatorsnelheid !{{is|is niet}} ..."
+        },
+        "titleFormatted": {
+          "en": "Fan speed !{{is|is not}} [[speed]]",
+          "nl": "Ventilatorsnelheid !{{is|is niet}} [[speed]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=aircon"
+          },
+          {
+            "type": "dropdown",
+            "name": "speed",
+            "values": [
+              {
+                "id": "auto",
+                "label": {
+                  "en": "Auto",
+                  "nl": "Automatisch"
+                }
+              },
+              {
+                "id": "low",
+                "label": {
+                  "en": "Low",
+                  "nl": "Laag"
+                }
+              },
+              {
+                "id": "medium",
+                "label": {
+                  "en": "Medium",
+                  "nl": "Midden"
+                }
+              },
+              {
+                "id": "high",
+                "label": {
+                  "en": "High",
+                  "nl": "Hoog"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "hon_fan_speed_is"
+      },
+      {
+        "title": {
+          "en": "Mode !{{is|is not}} ...",
+          "nl": "Modus !{{is|is niet}} ..."
+        },
+        "titleFormatted": {
+          "en": "Mode !{{is|is not}} [[mode]]",
+          "nl": "Modus !{{is|is niet}} [[mode]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=aircon"
+          },
+          {
+            "type": "dropdown",
+            "name": "mode",
+            "values": [
+              {
+                "id": "auto",
+                "label": {
+                  "en": "Auto",
+                  "nl": "Automatisch"
+                }
+              },
+              {
+                "id": "cool",
+                "label": {
+                  "en": "Cool",
+                  "nl": "Koelen"
+                }
+              },
+              {
+                "id": "heat",
+                "label": {
+                  "en": "Heat",
+                  "nl": "Verwarmen"
+                }
+              },
+              {
+                "id": "dry",
+                "label": {
+                  "en": "Dry",
+                  "nl": "Ontvochtigen"
+                }
+              },
+              {
+                "id": "fan_only",
+                "label": {
+                  "en": "Fan Only",
+                  "nl": "Ventilator"
+                }
+              },
+              {
+                "id": "10_heating",
+                "label": {
+                  "en": "Anti-Freeze",
+                  "nl": "Vorstbeveiliging"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "hon_hvac_mode_is"
+      }
+    ],
+    "actions": [
+      {
+        "title": {
+          "en": "Turn beep sound on or off",
+          "nl": "Zet pieptoon aan of uit"
+        },
+        "titleFormatted": {
+          "en": "Turn beep sound [[enabled]]",
+          "nl": "Zet pieptoon [[enabled]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=aircon"
+          },
+          {
+            "type": "dropdown",
+            "name": "enabled",
+            "values": [
+              {
+                "id": "true",
+                "label": {
+                  "en": "On",
+                  "nl": "Aan"
+                }
+              },
+              {
+                "id": "false",
+                "label": {
+                  "en": "Off",
+                  "nl": "Uit"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "set_hon_echo_mode"
+      },
+      {
+        "title": {
+          "en": "Turn eco mode on or off",
+          "nl": "Zet ecomodus aan of uit"
+        },
+        "titleFormatted": {
+          "en": "Turn eco mode [[enabled]]",
+          "nl": "Zet ecomodus [[enabled]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=aircon"
+          },
+          {
+            "type": "dropdown",
+            "name": "enabled",
+            "values": [
+              {
+                "id": "true",
+                "label": {
+                  "en": "On",
+                  "nl": "Aan"
+                }
+              },
+              {
+                "id": "false",
+                "label": {
+                  "en": "Off",
+                  "nl": "Uit"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "set_hon_eco_mode"
+      },
+      {
+        "title": {
+          "en": "Set Eco Pilot to ...",
+          "nl": "Stel Eco Pilot in op ..."
+        },
+        "titleFormatted": {
+          "en": "Set Eco Pilot to [[mode]]",
+          "nl": "Stel Eco Pilot in op [[mode]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=aircon"
+          },
+          {
+            "type": "dropdown",
+            "name": "mode",
+            "values": [
+              {
+                "id": "off",
+                "label": {
+                  "en": "Off",
+                  "nl": "Uit"
+                }
+              },
+              {
+                "id": "avoid",
+                "label": {
+                  "en": "Avoid Me",
+                  "nl": "Vermijd mij"
+                }
+              },
+              {
+                "id": "follow",
+                "label": {
+                  "en": "Follow Me",
+                  "nl": "Volg mij"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "set_hon_eco_pilot"
+      },
+      {
+        "title": {
+          "en": "Set fan speed to ...",
+          "nl": "Stel ventilatorsnelheid in op ..."
+        },
+        "titleFormatted": {
+          "en": "Set fan speed to [[speed]]",
+          "nl": "Stel ventilatorsnelheid in op [[speed]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=aircon"
+          },
+          {
+            "type": "dropdown",
+            "name": "speed",
+            "values": [
+              {
+                "id": "auto",
+                "label": {
+                  "en": "Auto",
+                  "nl": "Automatisch"
+                }
+              },
+              {
+                "id": "low",
+                "label": {
+                  "en": "Low",
+                  "nl": "Laag"
+                }
+              },
+              {
+                "id": "medium",
+                "label": {
+                  "en": "Medium",
+                  "nl": "Midden"
+                }
+              },
+              {
+                "id": "high",
+                "label": {
+                  "en": "High",
+                  "nl": "Hoog"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "set_hon_fan_speed"
+      },
+      {
+        "title": {
+          "en": "Turn health mode on or off",
+          "nl": "Zet gezondheidsmodus aan of uit"
+        },
+        "titleFormatted": {
+          "en": "Turn health mode [[enabled]]",
+          "nl": "Zet gezondheidsmodus [[enabled]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=aircon"
+          },
+          {
+            "type": "dropdown",
+            "name": "enabled",
+            "values": [
+              {
+                "id": "true",
+                "label": {
+                  "en": "On",
+                  "nl": "Aan"
+                }
+              },
+              {
+                "id": "false",
+                "label": {
+                  "en": "Off",
+                  "nl": "Uit"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "set_hon_health_mode"
+      },
+      {
+        "title": {
+          "en": "Set mode to ...",
+          "nl": "Stel modus in op ..."
+        },
+        "titleFormatted": {
+          "en": "Set mode to [[mode]]",
+          "nl": "Stel modus in op [[mode]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=aircon"
+          },
+          {
+            "type": "dropdown",
+            "name": "mode",
+            "values": [
+              {
+                "id": "auto",
+                "label": {
+                  "en": "Auto",
+                  "nl": "Automatisch"
+                }
+              },
+              {
+                "id": "cool",
+                "label": {
+                  "en": "Cool",
+                  "nl": "Koelen"
+                }
+              },
+              {
+                "id": "heat",
+                "label": {
+                  "en": "Heat",
+                  "nl": "Verwarmen"
+                }
+              },
+              {
+                "id": "dry",
+                "label": {
+                  "en": "Dry",
+                  "nl": "Ontvochtigen"
+                }
+              },
+              {
+                "id": "fan_only",
+                "label": {
+                  "en": "Fan Only",
+                  "nl": "Ventilator"
+                }
+              },
+              {
+                "id": "10_heating",
+                "label": {
+                  "en": "Anti-Freeze",
+                  "nl": "Vorstbeveiliging"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "set_hon_hvac_mode"
+      },
+      {
+        "title": {
+          "en": "Turn rapid mode on or off",
+          "nl": "Zet snelle modus aan of uit"
+        },
+        "titleFormatted": {
+          "en": "Turn rapid mode [[enabled]]",
+          "nl": "Zet snelle modus [[enabled]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=aircon"
+          },
+          {
+            "type": "dropdown",
+            "name": "enabled",
+            "values": [
+              {
+                "id": "true",
+                "label": {
+                  "en": "On",
+                  "nl": "Aan"
+                }
+              },
+              {
+                "id": "false",
+                "label": {
+                  "en": "Off",
+                  "nl": "Uit"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "set_hon_rapid_mode"
+      },
+      {
+        "title": {
+          "en": "Turn screen display on or off",
+          "nl": "Zet schermdisplay aan of uit"
+        },
+        "titleFormatted": {
+          "en": "Turn screen display [[enabled]]",
+          "nl": "Zet schermdisplay [[enabled]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=aircon"
+          },
+          {
+            "type": "dropdown",
+            "name": "enabled",
+            "values": [
+              {
+                "id": "true",
+                "label": {
+                  "en": "On",
+                  "nl": "Aan"
+                }
+              },
+              {
+                "id": "false",
+                "label": {
+                  "en": "Off",
+                  "nl": "Uit"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "set_hon_screen_display"
+      },
+      {
+        "title": {
+          "en": "Turn silent mode on or off",
+          "nl": "Zet stille modus aan of uit"
+        },
+        "titleFormatted": {
+          "en": "Turn silent mode [[enabled]]",
+          "nl": "Zet stille modus [[enabled]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=aircon"
+          },
+          {
+            "type": "dropdown",
+            "name": "enabled",
+            "values": [
+              {
+                "id": "true",
+                "label": {
+                  "en": "On",
+                  "nl": "Aan"
+                }
+              },
+              {
+                "id": "false",
+                "label": {
+                  "en": "Off",
+                  "nl": "Uit"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "set_hon_silent_mode"
+      },
+      {
+        "title": {
+          "en": "Turn sleep mode on or off",
+          "nl": "Zet slaapmodus aan of uit"
+        },
+        "titleFormatted": {
+          "en": "Turn sleep mode [[enabled]]",
+          "nl": "Zet slaapmodus [[enabled]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=aircon"
+          },
+          {
+            "type": "dropdown",
+            "name": "enabled",
+            "values": [
+              {
+                "id": "true",
+                "label": {
+                  "en": "On",
+                  "nl": "Aan"
+                }
+              },
+              {
+                "id": "false",
+                "label": {
+                  "en": "Off",
+                  "nl": "Uit"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "set_hon_sleep_mode"
+      },
+      {
+        "title": {
+          "en": "Set swing to ...",
+          "nl": "Stel zwenken in op ..."
+        },
+        "titleFormatted": {
+          "en": "Set swing to [[swing]]",
+          "nl": "Stel zwenken in op [[swing]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=aircon"
+          },
+          {
+            "type": "dropdown",
+            "name": "swing",
+            "values": [
+              {
+                "id": "off",
+                "label": {
+                  "en": "Off",
+                  "nl": "Uit"
+                }
+              },
+              {
+                "id": "vertical",
+                "label": {
+                  "en": "Vertical",
+                  "nl": "Verticaal"
+                }
+              },
+              {
+                "id": "horizontal",
+                "label": {
+                  "en": "Horizontal",
+                  "nl": "Horizontaal"
+                }
+              },
+              {
+                "id": "both",
+                "label": {
+                  "en": "Both",
+                  "nl": "Beide"
+                }
+              }
+            ]
+          }
+        ],
+        "id": "set_hon_swing_mode"
+      }
+    ]
+  },
+  "drivers": [
+    {
+      "name": {
+        "en": "Air Conditioner",
+        "nl": "Airconditioner"
+      },
+      "class": "thermostat",
+      "capabilities": [
+        "measure_temperature",
+        "target_temperature",
+        "onoff",
+        "hon_hvac_mode",
+        "hon_fan_speed",
+        "hon_swing_mode",
+        "hon_eco_pilot",
+        "hon_silent_mode",
+        "hon_rapid_mode",
+        "hon_sleep_mode",
+        "hon_eco_mode",
+        "hon_health_mode",
+        "hon_screen_display",
+        "hon_echo_mode",
+        "measure_temperature.indoor",
+        "measure_temperature.outdoor"
+      ],
+      "capabilitiesOptions": {
+        "target_temperature": {
+          "min": 10,
+          "max": 30,
+          "step": 1
+        },
+        "measure_temperature": {
+          "title": {
+            "en": "Indoor Temperature",
+            "nl": "Binnentemperatuur"
+          }
+        },
+        "measure_temperature.indoor": {
+          "title": {
+            "en": "Indoor Temperature",
+            "nl": "Binnentemperatuur"
+          }
+        },
+        "measure_temperature.outdoor": {
+          "title": {
+            "en": "Outdoor Temperature",
+            "nl": "Buitentemperatuur"
+          }
+        }
+      },
+      "energy": {
+        "approximation": {
+          "usageOn": 1500,
+          "usageOff": 5
+        }
+      },
+      "pair": [
+        {
+          "id": "oauth"
+        },
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "prev": "oauth",
+            "next": "add_devices"
+          },
+          "options": {
+            "title": {
+              "en": "Select your Air Conditioner",
+              "nl": "Selecteer je Airconditioner"
+            }
+          }
+        },
+        {
+          "id": "add_devices",
+          "template": "add_devices"
+        }
+      ],
+      "repair": [
+        {
+          "id": "oauth"
+        }
+      ],
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+            "en": "Polling",
+            "nl": "Polling"
+          },
+          "children": [
+            {
+              "id": "poll_interval",
+              "type": "number",
+              "label": {
+                "en": "Poll Interval (seconds)",
+                "nl": "Poll-interval (seconden)"
+              },
+              "hint": {
+                "en": "How often to fetch device state from the API (5-3600 seconds)",
+                "nl": "Hoe vaak de apparaatstatus wordt opgehaald via de API (5-3600 seconden)"
+              },
+              "value": 5,
+              "min": 5,
+              "max": 3600,
+              "units": "s"
+            }
+          ]
+        }
+      ],
+      "platforms": [
+        "local",
+        "cloud"
+      ],
+      "connectivity": [
+        "cloud"
+      ],
+      "images": {
+        "small": "/drivers/aircon/assets/images/small.png",
+        "large": "/drivers/aircon/assets/images/large.png",
+        "xlarge": "/drivers/aircon/assets/images/xlarge.png"
+      },
+      "id": "aircon"
+    }
+  ],
+  "capabilities": {
+    "hon_echo_mode": {
+      "type": "boolean",
+      "title": {
+        "en": "Beep Sound",
+        "nl": "Pieptoon"
+      },
+      "desc": {
+        "en": "Sound feedback on commands",
+        "nl": "Geluidsbevestiging bij commando's"
+      },
+      "getable": true,
+      "setable": true,
+      "uiComponent": "toggle",
+      "uiQuickAction": false,
+      "insights": true,
+      "insightsTitleTrue": {
+        "en": "Beep sound turned on",
+        "nl": "Pieptoon ingeschakeld"
+      },
+      "insightsTitleFalse": {
+        "en": "Beep sound turned off",
+        "nl": "Pieptoon uitgeschakeld"
+      }
+    },
+    "hon_eco_mode": {
+      "type": "boolean",
+      "title": {
+        "en": "Eco Mode",
+        "nl": "Ecomodus"
+      },
+      "getable": true,
+      "setable": true,
+      "uiComponent": "toggle",
+      "uiQuickAction": false,
+      "insights": true,
+      "insightsTitleTrue": {
+        "en": "Eco mode turned on",
+        "nl": "Ecomodus ingeschakeld"
+      },
+      "insightsTitleFalse": {
+        "en": "Eco mode turned off",
+        "nl": "Ecomodus uitgeschakeld"
+      }
+    },
+    "hon_eco_pilot": {
+      "type": "enum",
+      "title": {
+        "en": "Eco Pilot",
+        "nl": "Eco Pilot"
+      },
+      "desc": {
+        "en": "Human presence detection mode",
+        "nl": "Menselijke aanwezigheidsdetectie"
+      },
+      "uiComponent": "picker",
+      "getable": true,
+      "setable": true,
+      "insights": true,
+      "values": [
+        {
+          "id": "off",
+          "title": {
+            "en": "Off",
+            "nl": "Uit"
+          }
+        },
+        {
+          "id": "avoid",
+          "title": {
+            "en": "Avoid Me",
+            "nl": "Vermijd mij"
+          }
+        },
+        {
+          "id": "follow",
+          "title": {
+            "en": "Follow Me",
+            "nl": "Volg mij"
+          }
+        }
+      ]
+    },
+    "hon_fan_speed": {
+      "type": "enum",
+      "title": {
+        "en": "Fan Speed",
+        "nl": "Ventilatorsnelheid"
+      },
+      "desc": {
+        "en": "The fan speed setting",
+        "nl": "De ventilatorsnelheid instelling"
+      },
+      "uiComponent": "picker",
+      "getable": true,
+      "setable": true,
+      "insights": true,
+      "values": [
+        {
+          "id": "auto",
+          "title": {
+            "en": "Auto",
+            "nl": "Automatisch"
+          }
+        },
+        {
+          "id": "low",
+          "title": {
+            "en": "Low",
+            "nl": "Laag"
+          }
+        },
+        {
+          "id": "medium",
+          "title": {
+            "en": "Medium",
+            "nl": "Middel"
+          }
+        },
+        {
+          "id": "high",
+          "title": {
+            "en": "High",
+            "nl": "Hoog"
+          }
+        }
+      ]
+    },
+    "hon_health_mode": {
+      "type": "boolean",
+      "title": {
+        "en": "Health Mode",
+        "nl": "Gezondheidsmodus"
+      },
+      "getable": true,
+      "setable": true,
+      "uiComponent": "toggle",
+      "uiQuickAction": false,
+      "insights": true,
+      "insightsTitleTrue": {
+        "en": "Health mode turned on",
+        "nl": "Gezondheidsmodus ingeschakeld"
+      },
+      "insightsTitleFalse": {
+        "en": "Health mode turned off",
+        "nl": "Gezondheidsmodus uitgeschakeld"
+      }
+    },
+    "hon_hvac_mode": {
+      "type": "enum",
+      "title": {
+        "en": "Mode",
+        "nl": "Modus"
+      },
+      "desc": {
+        "en": "The HVAC operating mode",
+        "nl": "De HVAC bedrijfsmodus"
+      },
+      "uiComponent": "picker",
+      "getable": true,
+      "setable": true,
+      "insights": true,
+      "uiQuickAction": true,
+      "values": [
+        {
+          "id": "auto",
+          "title": {
+            "en": "Auto",
+            "nl": "Automatisch"
+          }
+        },
+        {
+          "id": "cool",
+          "title": {
+            "en": "Cool",
+            "nl": "Koelen"
+          }
+        },
+        {
+          "id": "heat",
+          "title": {
+            "en": "Heat",
+            "nl": "Verwarmen"
+          }
+        },
+        {
+          "id": "dry",
+          "title": {
+            "en": "Dry",
+            "nl": "Drogen"
+          }
+        },
+        {
+          "id": "fan_only",
+          "title": {
+            "en": "Fan Only",
+            "nl": "Alleen Ventilator"
+          }
+        },
+        {
+          "id": "10_heating",
+          "title": {
+            "en": "Anti-Freeze (10°C)",
+            "nl": "Vorstbeveiliging (10°C)"
+          }
+        }
+      ]
+    },
+    "hon_rapid_mode": {
+      "type": "boolean",
+      "title": {
+        "en": "Rapid Mode",
+        "nl": "Snelle modus"
+      },
+      "desc": {
+        "en": "Fast heating or cooling boost",
+        "nl": "Snel verwarmen of koelen"
+      },
+      "getable": true,
+      "setable": true,
+      "uiComponent": "toggle",
+      "uiQuickAction": false,
+      "insights": true,
+      "insightsTitleTrue": {
+        "en": "Rapid mode turned on",
+        "nl": "Snelle modus ingeschakeld"
+      },
+      "insightsTitleFalse": {
+        "en": "Rapid mode turned off",
+        "nl": "Snelle modus uitgeschakeld"
+      }
+    },
+    "hon_screen_display": {
+      "type": "boolean",
+      "title": {
+        "en": "Screen Display",
+        "nl": "Schermdisplay"
+      },
+      "getable": true,
+      "setable": true,
+      "uiComponent": "toggle",
+      "uiQuickAction": false,
+      "insights": true,
+      "insightsTitleTrue": {
+        "en": "Screen display turned on",
+        "nl": "Schermdisplay ingeschakeld"
+      },
+      "insightsTitleFalse": {
+        "en": "Screen display turned off",
+        "nl": "Schermdisplay uitgeschakeld"
+      }
+    },
+    "hon_silent_mode": {
+      "type": "boolean",
+      "title": {
+        "en": "Silent Mode",
+        "nl": "Stille modus"
+      },
+      "getable": true,
+      "setable": true,
+      "uiComponent": "toggle",
+      "uiQuickAction": false,
+      "insights": true,
+      "insightsTitleTrue": {
+        "en": "Silent mode turned on",
+        "nl": "Stille modus ingeschakeld"
+      },
+      "insightsTitleFalse": {
+        "en": "Silent mode turned off",
+        "nl": "Stille modus uitgeschakeld"
+      }
+    },
+    "hon_sleep_mode": {
+      "type": "boolean",
+      "title": {
+        "en": "Sleep Mode",
+        "nl": "Slaapmodus"
+      },
+      "getable": true,
+      "setable": true,
+      "uiComponent": "toggle",
+      "uiQuickAction": false,
+      "insights": true,
+      "insightsTitleTrue": {
+        "en": "Sleep mode turned on",
+        "nl": "Slaapmodus ingeschakeld"
+      },
+      "insightsTitleFalse": {
+        "en": "Sleep mode turned off",
+        "nl": "Slaapmodus uitgeschakeld"
+      }
+    },
+    "hon_swing_mode": {
+      "type": "enum",
+      "title": {
+        "en": "Swing",
+        "nl": "Zwenken"
+      },
+      "desc": {
+        "en": "The air swing direction",
+        "nl": "De luchtstroom zwenkrichting"
+      },
+      "uiComponent": "picker",
+      "getable": true,
+      "setable": true,
+      "insights": true,
+      "values": [
+        {
+          "id": "off",
+          "title": {
+            "en": "Off",
+            "nl": "Uit"
+          }
+        },
+        {
+          "id": "vertical",
+          "title": {
+            "en": "Vertical",
+            "nl": "Verticaal"
+          }
+        },
+        {
+          "id": "horizontal",
+          "title": {
+            "en": "Horizontal",
+            "nl": "Horizontaal"
+          }
+        },
+        {
+          "id": "both",
+          "title": {
+            "en": "Both",
+            "nl": "Beide"
+          }
+        }
+      ]
+    }
+  }
+}

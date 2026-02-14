@@ -1,0 +1,20 @@
+{
+  "type": "boolean",
+  "title": {
+    "en": "Eco Mode",
+    "nl": "Ecomodus"
+  },
+  "getable": true,
+  "setable": true,
+  "uiComponent": "toggle",
+  "uiQuickAction": false,
+  "insights": true,
+  "insightsTitleTrue": {
+    "en": "Eco mode turned on",
+    "nl": "Ecomodus ingeschakeld"
+  },
+  "insightsTitleFalse": {
+    "en": "Eco mode turned off",
+    "nl": "Ecomodus uitgeschakeld"
+  }
+}

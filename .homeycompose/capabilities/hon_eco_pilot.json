@@ -1,0 +1,38 @@
+{
+  "type": "enum",
+  "title": {
+    "en": "Eco Pilot",
+    "nl": "Eco Pilot"
+  },
+  "desc": {
+    "en": "Human presence detection mode",
+    "nl": "Menselijke aanwezigheidsdetectie"
+  },
+  "uiComponent": "picker",
+  "getable": true,
+  "setable": true,
+  "insights": true,
+  "values": [
+    {
+      "id": "off",
+      "title": {
+        "en": "Off",
+        "nl": "Uit"
+      }
+    },
+    {
+      "id": "avoid",
+      "title": {
+        "en": "Avoid Me",
+        "nl": "Vermijd mij"
+      }
+    },
+    {
+      "id": "follow",
+      "title": {
+        "en": "Follow Me",
+        "nl": "Volg mij"
+      }
+    }
+  ]
+}

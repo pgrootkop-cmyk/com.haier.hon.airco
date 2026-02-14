@@ -1,0 +1,27 @@
+{
+  "title": {
+    "en": "The HVAC mode changed",
+    "nl": "De modus is gewijzigd"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=aircon"
+    }
+  ],
+  "tokens": [
+    {
+      "name": "mode",
+      "type": "string",
+      "title": {
+        "en": "Mode",
+        "nl": "Modus"
+      },
+      "example": {
+        "en": "cool",
+        "nl": "cool"
+      }
+    }
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "type": "enum",
+  "title": {
+    "en": "Swing",
+    "nl": "Zwenken"
+  },
+  "desc": {
+    "en": "The air swing direction",
+    "nl": "De luchtstroom zwenkrichting"
+  },
+  "uiComponent": "picker",
+  "getable": true,
+  "setable": true,
+  "insights": true,
+  "values": [
+    {
+      "id": "off",
+      "title": {
+        "en": "Off",
+        "nl": "Uit"
+      }
+    },
+    {
+      "id": "vertical",
+      "title": {
+        "en": "Vertical",
+        "nl": "Verticaal"
+      }
+    },
+    {
+      "id": "horizontal",
+      "title": {
+        "en": "Horizontal",
+        "nl": "Horizontaal"
+      }
+    },
+    {
+      "id": "both",
+      "title": {
+        "en": "Both",
+        "nl": "Beide"
+      }
+    }
+  ]
+}

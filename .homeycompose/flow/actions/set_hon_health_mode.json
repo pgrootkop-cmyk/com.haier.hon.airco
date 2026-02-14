@@ -1,0 +1,25 @@
+{
+  "title": {
+    "en": "Turn health mode on or off",
+    "nl": "Zet gezondheidsmodus aan of uit"
+  },
+  "titleFormatted": {
+    "en": "Turn health mode [[enabled]]",
+    "nl": "Zet gezondheidsmodus [[enabled]]"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=aircon"
+    },
+    {
+      "type": "dropdown",
+      "name": "enabled",
+      "values": [
+        { "id": "true", "label": { "en": "On", "nl": "Aan" } },
+        { "id": "false", "label": { "en": "Off", "nl": "Uit" } }
+      ]
+    }
+  ]
+}

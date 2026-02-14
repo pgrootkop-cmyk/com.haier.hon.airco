@@ -1,0 +1,36 @@
+{
+  "id": "com.haier.hon.airco",
+  "version": "0.0.1",
+  "compatibility": ">=5.0.0",
+  "sdk": 3,
+  "platforms": ["local", "cloud"],
+  "brandColor": "#004ea2",
+  "name": {
+    "en": "Haier hOn",
+    "nl": "Haier hOn"
+  },
+  "description": {
+    "en": "Smart Climate Control",
+    "nl": "Slim Klimaatbeheer"
+  },
+  "category": ["climate"],
+  "permissions": [],
+  "tags": {
+    "en": ["Haier", "hOn", "air conditioner", "airco", "AC", "thermostat", "heat pump", "climate", "Candy", "Hoover", "HVAC", "cooling", "heating"],
+    "nl": ["Haier", "hOn", "airconditioner", "airco", "AC", "thermostaat", "warmtepomp", "klimaat", "Candy", "Hoover", "HVAC", "koelen", "verwarmen"]
+  },
+  "images": {
+    "small": "/assets/images/small.png",
+    "large": "/assets/images/large.png",
+    "xlarge": "/assets/images/xlarge.png"
+  },
+  "author": {
+    "name": "p.grootkop"
+  },
+  "source": "https://github.com/pgrootkop-cmyk/com.haier.hon.airco",
+  "homepage": "https://github.com/pgrootkop-cmyk/com.haier.hon.airco",
+  "support": "https://github.com/pgrootkop-cmyk/com.haier.hon.airco/issues",
+  "bugs": {
+    "url": "https://github.com/pgrootkop-cmyk/com.haier.hon.airco/issues"
+  }
+}

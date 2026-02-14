@@ -1,0 +1,20 @@
+# Development files
+.git/
+.github/
+.gitignore
+.eslintrc.json
+*.md
+!README.md
+
+# Test files
+test/
+tests/
+*.test.js
+*.spec.js
+
+# Documentation
+docs/
+
+# IDE
+.idea/
+.vscode/

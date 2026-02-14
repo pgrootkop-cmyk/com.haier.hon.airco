@@ -1,0 +1,25 @@
+{
+  "title": {
+    "en": "Turn eco mode on or off",
+    "nl": "Zet ecomodus aan of uit"
+  },
+  "titleFormatted": {
+    "en": "Turn eco mode [[enabled]]",
+    "nl": "Zet ecomodus [[enabled]]"
+  },
+  "args": [
+    {
+      "type": "device",
+      "name": "device",
+      "filter": "driver_id=aircon"
+    },
+    {
+      "type": "dropdown",
+      "name": "enabled",
+      "values": [
+        { "id": "true", "label": { "en": "On", "nl": "Aan" } },
+        { "id": "false", "label": { "en": "Off", "nl": "Uit" } }
+      ]
+    }
+  ]
+}
