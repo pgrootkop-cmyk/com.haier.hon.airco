@@ -1,9 +1,11 @@
 {
   "id": "com.haier.hon.airco",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "compatibility": ">=12.2.0",
   "sdk": 3,
-  "platforms": ["local"],
+  "platforms": [
+    "local"
+  ],
   "brandColor": "#004ea2",
   "name": {
     "en": "Haier hOn",
@@ -13,11 +15,41 @@
     "en": "Smart Climate Control",
     "nl": "Slim Klimaatbeheer"
   },
-  "category": ["climate"],
+  "category": [
+    "climate"
+  ],
   "permissions": [],
   "tags": {
-    "en": ["Haier", "hOn", "air conditioner", "airco", "AC", "thermostat", "heat pump", "climate", "Candy", "Hoover", "HVAC", "cooling", "heating"],
-    "nl": ["Haier", "hOn", "airconditioner", "airco", "AC", "thermostaat", "warmtepomp", "klimaat", "Candy", "Hoover", "HVAC", "koelen", "verwarmen"]
+    "en": [
+      "Haier",
+      "hOn",
+      "air conditioner",
+      "airco",
+      "AC",
+      "thermostat",
+      "heat pump",
+      "climate",
+      "Candy",
+      "Hoover",
+      "HVAC",
+      "cooling",
+      "heating"
+    ],
+    "nl": [
+      "Haier",
+      "hOn",
+      "airconditioner",
+      "airco",
+      "AC",
+      "thermostaat",
+      "warmtepomp",
+      "klimaat",
+      "Candy",
+      "Hoover",
+      "HVAC",
+      "koelen",
+      "verwarmen"
+    ]
   },
   "images": {
     "small": "/assets/images/small.png",
