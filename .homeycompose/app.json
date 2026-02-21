@@ -1,6 +1,6 @@
 {
   "id": "com.haier.hon.airco",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "compatibility": ">=12.2.0",
   "sdk": 3,
   "platforms": [
