@@ -29,66 +29,44 @@ class HaierHonApp extends Homey.App {
     const idToken = this.homey.settings.get('idToken');
     const refreshToken = this.homey.settings.get('refreshToken');
 
-    if (!accessToken || !idToken) {
+    if (!refreshToken && !accessToken) {
       this.log('No tokens stored, waiting for pairing...');
       return;
     }
 
     try {
       this.api = new HonApi({
+        refreshToken: refreshToken,
         onTokenRefresh: (newRefreshToken) => {
           this.homey.settings.set('refreshToken', newRefreshToken);
           this.log('Refresh token updated in settings');
         },
-        onTokensUpdated: (accessToken, idToken) => {
-          this.homey.settings.set('accessToken', accessToken);
-          this.homey.settings.set('idToken', idToken);
+        onTokensUpdated: (newAccessToken, newIdToken) => {
+          this.homey.settings.set('accessToken', newAccessToken);
+          this.homey.settings.set('idToken', newIdToken);
           this.log('Access & ID tokens updated in settings');
         },
         log: this.log.bind(this),
         error: this.error.bind(this),
       });
 
-      // Set stored tokens and initialize
-      this.api.setTokens(accessToken, idToken, refreshToken);
-      await this.api.initializeWithTokens();
-      this.log('API authenticated successfully with stored tokens');
+      if (accessToken && idToken) {
+        // We have all tokens — set them and exchange for Cognito token
+        this.api.setTokens(accessToken, idToken, refreshToken);
+        await this.api.initializeWithTokens();
+        this.log('API authenticated with stored tokens');
+      } else if (refreshToken) {
+        // Only refresh token available — use it to get fresh access/id/cognito tokens
+        this.log('Only refresh token stored, refreshing...');
+        await this.api._safeRefresh();
+        this.log('API authenticated via refresh token');
+      }
     } catch (error) {
       this.error('Failed to initialize API:', error.message);
 
-      // If we have a refresh token, try to refresh
-      if (refreshToken) {
-        this.log('Attempting to refresh tokens...');
-        try {
-          this.api = new HonApi({
-            refreshToken: refreshToken,
-            onTokenRefresh: (newRefreshToken) => {
-              this.homey.settings.set('refreshToken', newRefreshToken);
-              this.log('Refresh token updated in settings');
-            },
-            onTokensUpdated: (accessToken, idToken) => {
-              this.homey.settings.set('accessToken', accessToken);
-              this.homey.settings.set('idToken', idToken);
-              this.log('Access & ID tokens updated in settings');
-            },
-            log: this.log.bind(this),
-            error: this.error.bind(this),
-          });
-          await this.api.authenticate();
-
-          // Store the new tokens
-          this.homey.settings.set('accessToken', this.api.accessToken);
-          this.homey.settings.set('idToken', this.api.idToken);
-          this.log('API authenticated successfully with refreshed tokens');
-          return;
-        } catch (refreshError) {
-          this.error('Token refresh failed:', refreshError.message);
-        }
-      }
-
-      // Clear invalid tokens
-      this.homey.settings.set('accessToken', null);
-      this.homey.settings.set('idToken', null);
+      // Don't clear tokens — the refresh token may still be valid.
+      // The device will retry on next poll via _ensureAuthenticated().
+      // If everything fails, the user can Repair.
       this.api = null;
     }
   }
@@ -103,7 +81,7 @@ class HaierHonApp extends Homey.App {
 
   /**
    * Set tokens from OAuth flow and reinitialize the API
-   * Called during pairing
+   * Called during pairing and repair
    * @param {string} accessToken
    * @param {string} idToken
    * @param {string} [refreshToken]

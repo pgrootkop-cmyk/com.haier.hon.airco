@@ -8,9 +8,9 @@
     "measure_temperature",
     "target_temperature",
     "onoff",
-    "hon_hvac_mode",
-    "hon_fan_speed",
-    "hon_swing_mode",
+    "thermostat_mode",
+    "fan_mode",
+    "swing_mode",
     "hon_eco_pilot",
     "hon_silent_mode",
     "hon_rapid_mode",
@@ -45,6 +45,32 @@
         "en": "Outdoor Temperature",
         "nl": "Buitentemperatuur"
       }
+    },
+    "thermostat_mode": {
+      "values": [
+        { "id": "auto", "title": { "en": "Auto", "nl": "Automatisch" } },
+        { "id": "cool", "title": { "en": "Cool", "nl": "Koelen" } },
+        { "id": "heat", "title": { "en": "Heat", "nl": "Verwarmen" } },
+        { "id": "dry", "title": { "en": "Dry", "nl": "Ontvochtigen" } },
+        { "id": "fan_only", "title": { "en": "Fan Only", "nl": "Ventilator" } },
+        { "id": "10_heating", "title": { "en": "Anti-Freeze (10°C)", "nl": "Vorstbeveiliging (10°C)" } }
+      ]
+    },
+    "fan_mode": {
+      "values": [
+        { "id": "auto", "title": { "en": "Auto", "nl": "Automatisch" } },
+        { "id": "low", "title": { "en": "Low", "nl": "Laag" } },
+        { "id": "medium", "title": { "en": "Medium", "nl": "Middel" } },
+        { "id": "high", "title": { "en": "High", "nl": "Hoog" } }
+      ]
+    },
+    "swing_mode": {
+      "values": [
+        { "id": "off", "title": { "en": "Off", "nl": "Uit" } },
+        { "id": "vertical", "title": { "en": "Vertical", "nl": "Verticaal" } },
+        { "id": "horizontal", "title": { "en": "Horizontal", "nl": "Horizontaal" } },
+        { "id": "both", "title": { "en": "Both", "nl": "Beide" } }
+      ]
     }
   },
   "energy": {

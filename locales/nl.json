@@ -7,26 +7,5 @@
     "not_authenticated": "Niet geauthenticeerd. Repareer het apparaat om opnieuw te verbinden.",
     "api_unavailable": "Kan geen verbinding maken met Haier servers.",
     "command_failed": "Kon commando niet naar apparaat sturen."
-  },
-  "capability": {
-    "hon_hvac_mode": {
-      "auto": "Automatisch",
-      "cool": "Koelen",
-      "heat": "Verwarmen",
-      "dry": "Drogen",
-      "fan_only": "Alleen Ventilator"
-    },
-    "hon_fan_speed": {
-      "auto": "Automatisch",
-      "low": "Laag",
-      "medium": "Middel",
-      "high": "Hoog"
-    },
-    "hon_swing_mode": {
-      "off": "Uit",
-      "vertical": "Verticaal",
-      "horizontal": "Horizontaal",
-      "both": "Beide"
-    }
   }
 }

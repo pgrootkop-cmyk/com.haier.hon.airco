@@ -24,5 +24,11 @@ build/
 coverage/
 
 
+# Claude Code / Claude Flow (local tooling)
+.claude/
+.claude-flow/
+.mcp.json
+CLAUDE.md
+
 # Added by Homey CLI
 /.homeybuild/

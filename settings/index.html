@@ -8,18 +8,26 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      padding: 20px;
-      max-width: 400px;
-      margin: 0 auto;
+      background: #f5f5f7;
       color: #333;
-    }
-    h2 { font-size: 18px; margin-bottom: 4px; }
-    .subtitle { font-size: 12px; color: #888; margin-bottom: 16px; }
-    .card {
-      background: #f8f9fa;
-      border-radius: 10px;
       padding: 16px;
-      margin-bottom: 12px;
+      line-height: 1.45;
+      -webkit-text-size-adjust: 100%;
+    }
+    h2 { font-size: 17px; font-weight: 700; color: #1a1a1a; margin-bottom: 2px; }
+    .subtitle { font-size: 12px; color: #888; margin-bottom: 14px; }
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+    }
+    .card h3 {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #1a1a1a;
     }
     .status-row {
       display: flex;
@@ -27,97 +35,186 @@
       gap: 10px;
     }
     .dot {
-      width: 10px;
-      height: 10px;
+      width: 10px; height: 10px;
       border-radius: 50%;
       flex-shrink: 0;
+      background: #ccc;
+      transition: background .3s;
     }
-    .dot.on { background: #28a745; }
+    .dot.on { background: #34c759; }
     .dot.off { background: #dc3545; }
-    .status-text {
-      font-size: 14px;
-      font-weight: 600;
-    }
+    .status-text { font-size: 14px; font-weight: 600; }
     .info {
-      font-size: 12px;
-      color: #666;
-      line-height: 1.5;
-      margin-top: 8px;
+      font-size: 12px; color: #666;
+      line-height: 1.5; margin-top: 6px;
     }
     .btn {
-      display: block;
-      width: 100%;
+      display: block; width: 100%;
       padding: 10px;
-      font-size: 13px;
-      font-weight: 600;
-      color: white;
-      background: #dc3545;
-      border: none;
-      border-radius: 8px;
+      font-size: 13px; font-weight: 600;
+      color: #fff; border: none; border-radius: 8px;
       cursor: pointer;
-      margin-top: 12px;
+      transition: background .2s, transform .1s;
+      -webkit-tap-highlight-color: transparent;
     }
-    .btn:hover { background: #c82333; }
+    .btn:active { transform: scale(.98); }
+    .btn:disabled { opacity: .35; cursor: default; transform: none; }
+    .btn-red { background: #dc3545; }
+    .btn-red:hover:not(:disabled) { background: #c82333; }
     .msg {
-      text-align: center;
-      font-size: 12px;
-      padding: 8px;
-      border-radius: 6px;
-      margin-top: 8px;
-      display: none;
+      text-align: center; font-size: 12px;
+      padding: 8px; border-radius: 6px;
+      margin-top: 8px; display: none;
     }
     .msg.show { display: block; }
     .msg.ok { background: #e8f5e9; color: #2e7d32; }
+    .msg.bad { background: #fef2f2; color: #c62828; }
+    .meta { font-size: 11px; color: #aaa; margin-top: 4px; }
+    .hidden { display: none; }
   </style>
 </head>
 <body>
-  <h2>hOn Account</h2>
-  <p class="subtitle">Manage your Haier hOn connection</p>
 
+  <h2 data-i="title">hOn Account</h2>
+  <p class="subtitle" data-i="subtitle">Manage your Haier hOn connection</p>
+
+  <!-- Connection status -->
   <div class="card">
+    <h3 data-i="statusTitle">Connection Status</h3>
     <div class="status-row">
       <div class="dot" id="dot"></div>
-      <span class="status-text" id="statusText">Checking...</span>
+      <span class="status-text" id="statusText" data-i="checking">Checking...</span>
     </div>
     <p class="info" id="info"></p>
   </div>
 
-  <button class="btn" id="clearBtn" style="display:none">Sign Out</button>
+  <!-- Sign out -->
+  <div class="card hidden" id="signOutCard">
+    <h3 data-i="signOutTitle">Sign Out</h3>
+    <p class="info" style="margin-top:0;margin-bottom:8px" data-i="signOutDesc">Remove stored credentials. You will need to re-pair your devices using Repair.</p>
+    <button class="btn btn-red" id="clearBtn" data-i="signOutBtn">Sign Out</button>
+  </div>
+
   <div class="msg" id="msg"></div>
 
   <script>
+    /* -- i18n -- */
+    var T = {
+      en: {
+        title: 'hOn Account',
+        subtitle: 'Manage your Haier hOn connection',
+        statusTitle: 'Connection Status',
+        checking: 'Checking\u2026',
+        connected: 'Connected',
+        notConnected: 'Not connected',
+        infoConnected: 'Your hOn account is linked. To re-authenticate, go to your device and choose Repair.',
+        infoNotConnected: 'Add a device to connect your hOn account.',
+        signOutTitle: 'Sign Out',
+        signOutDesc: 'Remove stored credentials. You will need to re-pair your devices using Repair.',
+        signOutBtn: 'Sign Out',
+        signedOut: 'Signed out. Use Repair on your device to reconnect.',
+        msgCleared: 'Credentials removed.',
+        error: 'Could not load settings.'
+      },
+      nl: {
+        title: 'hOn Account',
+        subtitle: 'Beheer je Haier hOn-verbinding',
+        statusTitle: 'Verbindingsstatus',
+        checking: 'Controleren\u2026',
+        connected: 'Verbonden',
+        notConnected: 'Niet verbonden',
+        infoConnected: 'Je hOn-account is gekoppeld. Om opnieuw te verifi\u00ebren, ga naar je apparaat en kies Repareren.',
+        infoNotConnected: 'Voeg een apparaat toe om je hOn-account te koppelen.',
+        signOutTitle: 'Uitloggen',
+        signOutDesc: 'Verwijder opgeslagen inloggegevens. Je moet je apparaten opnieuw koppelen via Repareren.',
+        signOutBtn: 'Uitloggen',
+        signedOut: 'Uitgelogd. Gebruik Repareren op je apparaat om opnieuw te verbinden.',
+        msgCleared: 'Inloggegevens verwijderd.',
+        error: 'Kan instellingen niet laden.'
+      }
+    };
+
+    var lang = 'en';
+
+    function t(key) { return (T[lang] && T[lang][key]) || T.en[key] || key; }
+
+    function applyLang() {
+      document.querySelectorAll('[data-i]').forEach(function(el) {
+        var key = el.getAttribute('data-i');
+        var val = t(key);
+        if (val) el.textContent = val;
+      });
+    }
+
+    /* -- DOM refs -- */
+    var dot = document.getElementById('dot');
+    var statusText = document.getElementById('statusText');
+    var info = document.getElementById('info');
+    var signOutCard = document.getElementById('signOutCard');
+    var clearBtn = document.getElementById('clearBtn');
+    var msg = document.getElementById('msg');
+
+    function showMsg(text, cls) {
+      msg.textContent = text;
+      msg.className = 'msg show ' + (cls || 'ok');
+    }
+
+    function showConnected() {
+      dot.className = 'dot on';
+      statusText.textContent = t('connected');
+      info.textContent = t('infoConnected');
+      signOutCard.classList.remove('hidden');
+    }
+
+    function showDisconnected() {
+      dot.className = 'dot off';
+      statusText.textContent = t('notConnected');
+      info.textContent = t('infoNotConnected');
+      signOutCard.classList.add('hidden');
+    }
+
+    /* -- Homey bridge -- */
     function onHomeyReady(Homey) {
       Homey.ready();
 
-      var dot = document.getElementById('dot');
-      var statusText = document.getElementById('statusText');
-      var info = document.getElementById('info');
-      var clearBtn = document.getElementById('clearBtn');
-      var msg = document.getElementById('msg');
+      /* Detect language from Homey */
+      try {
+        Homey.getLanguage(function(err, homeyLang) {
+          if (!err && homeyLang && T[homeyLang]) {
+            lang = homeyLang;
+            applyLang();
+          }
+        });
+      } catch (e) {
+        /* getLanguage not available in all SDK versions */
+      }
 
-      Homey.get('accessToken', function(err, token) {
+      /* Check connection status */
+      Homey.get('refreshToken', function(err, token) {
+        if (err) {
+          dot.className = 'dot off';
+          statusText.textContent = t('error');
+          return;
+        }
         if (token) {
-          dot.classList.add('on');
-          statusText.textContent = 'Connected';
-          info.textContent = 'Your hOn account is linked. To re-authenticate, go to your device and choose Repair.';
-          clearBtn.style.display = 'block';
+          showConnected();
         } else {
-          dot.classList.add('off');
-          statusText.textContent = 'Not connected';
-          info.textContent = 'Add a device to connect your hOn account.';
+          showDisconnected();
         }
       });
 
+      /* Sign out handler */
       clearBtn.addEventListener('click', function() {
-        Homey.set('accessToken', null);
-        Homey.set('idToken', null);
-        Homey.set('refreshToken', null);
-        dot.className = 'dot off';
-        statusText.textContent = 'Not connected';
-        info.textContent = 'Signed out. Use Repair on your device to reconnect.';
-        clearBtn.style.display = 'none';
-        msg.textContent = 'Account cleared.';
-        msg.className = 'msg show ok';
+        clearBtn.disabled = true;
+        Homey.set('accessToken', null, function() {
+          Homey.set('idToken', null, function() {
+            Homey.set('refreshToken', null, function() {
+              showDisconnected();
+              showMsg(t('msgCleared'), 'ok');
+              clearBtn.disabled = false;
+            });
+          });
+        });
       });
     }
   </script>
