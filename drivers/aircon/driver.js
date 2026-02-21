@@ -14,45 +14,19 @@ class AirconDriver extends Homey.Driver {
   }
 
   /**
-   * Register flow card handlers (once per driver, not per device)
+   * Register flow card handlers for custom capabilities.
+   * System capabilities (thermostat_mode, fan_mode, swing_mode) provide
+   * their own flow cards automatically — no registration needed.
    * @private
    */
   _registerFlowCards() {
-    // Condition cards
-    this.homey.flow.getConditionCard('hon_hvac_mode_is')
-      .registerRunListener(async (args) => {
-        return args.device.getCapabilityValue('hon_hvac_mode') === args.mode;
-      });
-
-    this.homey.flow.getConditionCard('hon_fan_speed_is')
-      .registerRunListener(async (args) => {
-        return args.device.getCapabilityValue('hon_fan_speed') === args.speed;
-      });
-
+    // Condition card for Eco Pilot (custom capability)
     this.homey.flow.getConditionCard('hon_eco_pilot_is')
       .registerRunListener(async (args) => {
         return args.device.getCapabilityValue('hon_eco_pilot') === args.mode;
       });
 
-    // Action cards
-    this.homey.flow.getActionCard('set_hon_hvac_mode')
-      .registerRunListener(async (args) => {
-        await args.device._setHvacMode(args.mode);
-        await args.device.setCapabilityValue('hon_hvac_mode', args.mode).catch(this.error);
-      });
-
-    this.homey.flow.getActionCard('set_hon_fan_speed')
-      .registerRunListener(async (args) => {
-        await args.device._setFanSpeed(args.speed);
-        await args.device.setCapabilityValue('hon_fan_speed', args.speed).catch(this.error);
-      });
-
-    this.homey.flow.getActionCard('set_hon_swing_mode')
-      .registerRunListener(async (args) => {
-        await args.device._setSwingMode(args.swing);
-        await args.device.setCapabilityValue('hon_swing_mode', args.swing).catch(this.error);
-      });
-
+    // Action card for Eco Pilot (custom capability)
     this.homey.flow.getActionCard('set_hon_eco_pilot')
       .registerRunListener(async (args) => {
         const ECO_PILOT_TO_HON = { 'off': '0', 'avoid': '1', 'follow': '2' };
@@ -60,7 +34,7 @@ class AirconDriver extends Homey.Driver {
         await args.device.setCapabilityValue('hon_eco_pilot', args.mode).catch(this.error);
       });
 
-    // Boolean toggle action cards
+    // Boolean toggle action cards (custom capabilities)
     const TOGGLE_ACTIONS = {
       'set_hon_silent_mode': { capability: 'hon_silent_mode', param: 'muteStatus' },
       'set_hon_rapid_mode': { capability: 'hon_rapid_mode', param: 'rapidMode' },
@@ -184,6 +158,11 @@ class AirconDriver extends Homey.Driver {
   onRepair(session, device) {
     session.setHandler('disconnect', async () => {
       this.log('Repair session disconnected');
+    });
+
+    // Provide Homey's language to the repair view
+    session.setHandler('get_language', async () => {
+      return this.homey.i18n.getLanguage();
     });
 
     // Handle OAuth tokens for repair

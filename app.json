@@ -2,7 +2,7 @@
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "com.haier.hon.airco",
   "version": "0.0.1",
-  "compatibility": ">=5.0.0",
+  "compatibility": ">=12.2.0",
   "sdk": 3,
   "platforms": [
     "local"
@@ -96,62 +96,6 @@
           }
         ],
         "id": "hon_eco_pilot_changed"
-      },
-      {
-        "title": {
-          "en": "The fan speed changed",
-          "nl": "De ventilatorsnelheid is gewijzigd"
-        },
-        "args": [
-          {
-            "type": "device",
-            "name": "device",
-            "filter": "driver_id=aircon"
-          }
-        ],
-        "tokens": [
-          {
-            "name": "speed",
-            "type": "string",
-            "title": {
-              "en": "Speed",
-              "nl": "Snelheid"
-            },
-            "example": {
-              "en": "high",
-              "nl": "high"
-            }
-          }
-        ],
-        "id": "hon_fan_speed_changed"
-      },
-      {
-        "title": {
-          "en": "The HVAC mode changed",
-          "nl": "De modus is gewijzigd"
-        },
-        "args": [
-          {
-            "type": "device",
-            "name": "device",
-            "filter": "driver_id=aircon"
-          }
-        ],
-        "tokens": [
-          {
-            "name": "mode",
-            "type": "string",
-            "title": {
-              "en": "Mode",
-              "nl": "Modus"
-            },
-            "example": {
-              "en": "cool",
-              "nl": "cool"
-            }
-          }
-        ],
-        "id": "hon_hvac_mode_changed"
       }
     ],
     "conditions": [
@@ -199,124 +143,6 @@
           }
         ],
         "id": "hon_eco_pilot_is"
-      },
-      {
-        "title": {
-          "en": "Fan speed !{{is|is not}} ...",
-          "nl": "Ventilatorsnelheid !{{is|is niet}} ..."
-        },
-        "titleFormatted": {
-          "en": "Fan speed !{{is|is not}} [[speed]]",
-          "nl": "Ventilatorsnelheid !{{is|is niet}} [[speed]]"
-        },
-        "args": [
-          {
-            "type": "device",
-            "name": "device",
-            "filter": "driver_id=aircon"
-          },
-          {
-            "type": "dropdown",
-            "name": "speed",
-            "values": [
-              {
-                "id": "auto",
-                "label": {
-                  "en": "Auto",
-                  "nl": "Automatisch"
-                }
-              },
-              {
-                "id": "low",
-                "label": {
-                  "en": "Low",
-                  "nl": "Laag"
-                }
-              },
-              {
-                "id": "medium",
-                "label": {
-                  "en": "Medium",
-                  "nl": "Midden"
-                }
-              },
-              {
-                "id": "high",
-                "label": {
-                  "en": "High",
-                  "nl": "Hoog"
-                }
-              }
-            ]
-          }
-        ],
-        "id": "hon_fan_speed_is"
-      },
-      {
-        "title": {
-          "en": "Mode !{{is|is not}} ...",
-          "nl": "Modus !{{is|is niet}} ..."
-        },
-        "titleFormatted": {
-          "en": "Mode !{{is|is not}} [[mode]]",
-          "nl": "Modus !{{is|is niet}} [[mode]]"
-        },
-        "args": [
-          {
-            "type": "device",
-            "name": "device",
-            "filter": "driver_id=aircon"
-          },
-          {
-            "type": "dropdown",
-            "name": "mode",
-            "values": [
-              {
-                "id": "auto",
-                "label": {
-                  "en": "Auto",
-                  "nl": "Automatisch"
-                }
-              },
-              {
-                "id": "cool",
-                "label": {
-                  "en": "Cool",
-                  "nl": "Koelen"
-                }
-              },
-              {
-                "id": "heat",
-                "label": {
-                  "en": "Heat",
-                  "nl": "Verwarmen"
-                }
-              },
-              {
-                "id": "dry",
-                "label": {
-                  "en": "Dry",
-                  "nl": "Ontvochtigen"
-                }
-              },
-              {
-                "id": "fan_only",
-                "label": {
-                  "en": "Fan Only",
-                  "nl": "Ventilator"
-                }
-              },
-              {
-                "id": "10_heating",
-                "label": {
-                  "en": "Anti-Freeze",
-                  "nl": "Vorstbeveiliging"
-                }
-              }
-            ]
-          }
-        ],
-        "id": "hon_hvac_mode_is"
       }
     ],
     "actions": [
@@ -443,58 +269,6 @@
       },
       {
         "title": {
-          "en": "Set fan speed to ...",
-          "nl": "Stel ventilatorsnelheid in op ..."
-        },
-        "titleFormatted": {
-          "en": "Set fan speed to [[speed]]",
-          "nl": "Stel ventilatorsnelheid in op [[speed]]"
-        },
-        "args": [
-          {
-            "type": "device",
-            "name": "device",
-            "filter": "driver_id=aircon"
-          },
-          {
-            "type": "dropdown",
-            "name": "speed",
-            "values": [
-              {
-                "id": "auto",
-                "label": {
-                  "en": "Auto",
-                  "nl": "Automatisch"
-                }
-              },
-              {
-                "id": "low",
-                "label": {
-                  "en": "Low",
-                  "nl": "Laag"
-                }
-              },
-              {
-                "id": "medium",
-                "label": {
-                  "en": "Medium",
-                  "nl": "Midden"
-                }
-              },
-              {
-                "id": "high",
-                "label": {
-                  "en": "High",
-                  "nl": "Hoog"
-                }
-              }
-            ]
-          }
-        ],
-        "id": "set_hon_fan_speed"
-      },
-      {
-        "title": {
           "en": "Turn health mode on or off",
           "nl": "Zet gezondheidsmodus aan of uit"
         },
@@ -530,72 +304,6 @@
           }
         ],
         "id": "set_hon_health_mode"
-      },
-      {
-        "title": {
-          "en": "Set mode to ...",
-          "nl": "Stel modus in op ..."
-        },
-        "titleFormatted": {
-          "en": "Set mode to [[mode]]",
-          "nl": "Stel modus in op [[mode]]"
-        },
-        "args": [
-          {
-            "type": "device",
-            "name": "device",
-            "filter": "driver_id=aircon"
-          },
-          {
-            "type": "dropdown",
-            "name": "mode",
-            "values": [
-              {
-                "id": "auto",
-                "label": {
-                  "en": "Auto",
-                  "nl": "Automatisch"
-                }
-              },
-              {
-                "id": "cool",
-                "label": {
-                  "en": "Cool",
-                  "nl": "Koelen"
-                }
-              },
-              {
-                "id": "heat",
-                "label": {
-                  "en": "Heat",
-                  "nl": "Verwarmen"
-                }
-              },
-              {
-                "id": "dry",
-                "label": {
-                  "en": "Dry",
-                  "nl": "Ontvochtigen"
-                }
-              },
-              {
-                "id": "fan_only",
-                "label": {
-                  "en": "Fan Only",
-                  "nl": "Ventilator"
-                }
-              },
-              {
-                "id": "10_heating",
-                "label": {
-                  "en": "Anti-Freeze",
-                  "nl": "Vorstbeveiliging"
-                }
-              }
-            ]
-          }
-        ],
-        "id": "set_hon_hvac_mode"
       },
       {
         "title": {
@@ -748,58 +456,6 @@
           }
         ],
         "id": "set_hon_sleep_mode"
-      },
-      {
-        "title": {
-          "en": "Set swing to ...",
-          "nl": "Stel zwenken in op ..."
-        },
-        "titleFormatted": {
-          "en": "Set swing to [[swing]]",
-          "nl": "Stel zwenken in op [[swing]]"
-        },
-        "args": [
-          {
-            "type": "device",
-            "name": "device",
-            "filter": "driver_id=aircon"
-          },
-          {
-            "type": "dropdown",
-            "name": "swing",
-            "values": [
-              {
-                "id": "off",
-                "label": {
-                  "en": "Off",
-                  "nl": "Uit"
-                }
-              },
-              {
-                "id": "vertical",
-                "label": {
-                  "en": "Vertical",
-                  "nl": "Verticaal"
-                }
-              },
-              {
-                "id": "horizontal",
-                "label": {
-                  "en": "Horizontal",
-                  "nl": "Horizontaal"
-                }
-              },
-              {
-                "id": "both",
-                "label": {
-                  "en": "Both",
-                  "nl": "Beide"
-                }
-              }
-            ]
-          }
-        ],
-        "id": "set_hon_swing_mode"
       }
     ]
   },
@@ -814,9 +470,9 @@
         "measure_temperature",
         "target_temperature",
         "onoff",
-        "hon_hvac_mode",
-        "hon_fan_speed",
-        "hon_swing_mode",
+        "thermostat_mode",
+        "fan_mode",
+        "swing_mode",
         "hon_eco_pilot",
         "hon_silent_mode",
         "hon_rapid_mode",
@@ -851,6 +507,116 @@
             "en": "Outdoor Temperature",
             "nl": "Buitentemperatuur"
           }
+        },
+        "thermostat_mode": {
+          "values": [
+            {
+              "id": "auto",
+              "title": {
+                "en": "Auto",
+                "nl": "Automatisch"
+              }
+            },
+            {
+              "id": "cool",
+              "title": {
+                "en": "Cool",
+                "nl": "Koelen"
+              }
+            },
+            {
+              "id": "heat",
+              "title": {
+                "en": "Heat",
+                "nl": "Verwarmen"
+              }
+            },
+            {
+              "id": "dry",
+              "title": {
+                "en": "Dry",
+                "nl": "Ontvochtigen"
+              }
+            },
+            {
+              "id": "fan_only",
+              "title": {
+                "en": "Fan Only",
+                "nl": "Ventilator"
+              }
+            },
+            {
+              "id": "10_heating",
+              "title": {
+                "en": "Anti-Freeze (10°C)",
+                "nl": "Vorstbeveiliging (10°C)"
+              }
+            }
+          ]
+        },
+        "fan_mode": {
+          "values": [
+            {
+              "id": "auto",
+              "title": {
+                "en": "Auto",
+                "nl": "Automatisch"
+              }
+            },
+            {
+              "id": "low",
+              "title": {
+                "en": "Low",
+                "nl": "Laag"
+              }
+            },
+            {
+              "id": "medium",
+              "title": {
+                "en": "Medium",
+                "nl": "Middel"
+              }
+            },
+            {
+              "id": "high",
+              "title": {
+                "en": "High",
+                "nl": "Hoog"
+              }
+            }
+          ]
+        },
+        "swing_mode": {
+          "values": [
+            {
+              "id": "off",
+              "title": {
+                "en": "Off",
+                "nl": "Uit"
+              }
+            },
+            {
+              "id": "vertical",
+              "title": {
+                "en": "Vertical",
+                "nl": "Verticaal"
+              }
+            },
+            {
+              "id": "horizontal",
+              "title": {
+                "en": "Horizontal",
+                "nl": "Horizontaal"
+              }
+            },
+            {
+              "id": "both",
+              "title": {
+                "en": "Both",
+                "nl": "Beide"
+              }
+            }
+          ]
         }
       },
       "energy": {
@@ -1011,51 +777,6 @@
         }
       ]
     },
-    "hon_fan_speed": {
-      "type": "enum",
-      "title": {
-        "en": "Fan Speed",
-        "nl": "Ventilatorsnelheid"
-      },
-      "desc": {
-        "en": "The fan speed setting",
-        "nl": "De ventilatorsnelheid instelling"
-      },
-      "uiComponent": "picker",
-      "getable": true,
-      "setable": true,
-      "insights": true,
-      "values": [
-        {
-          "id": "auto",
-          "title": {
-            "en": "Auto",
-            "nl": "Automatisch"
-          }
-        },
-        {
-          "id": "low",
-          "title": {
-            "en": "Low",
-            "nl": "Laag"
-          }
-        },
-        {
-          "id": "medium",
-          "title": {
-            "en": "Medium",
-            "nl": "Middel"
-          }
-        },
-        {
-          "id": "high",
-          "title": {
-            "en": "High",
-            "nl": "Hoog"
-          }
-        }
-      ]
-    },
     "hon_health_mode": {
       "type": "boolean",
       "title": {
@@ -1075,66 +796,6 @@
         "en": "Health mode turned off",
         "nl": "Gezondheidsmodus uitgeschakeld"
       }
-    },
-    "hon_hvac_mode": {
-      "type": "enum",
-      "title": {
-        "en": "Mode",
-        "nl": "Modus"
-      },
-      "desc": {
-        "en": "The HVAC operating mode",
-        "nl": "De HVAC bedrijfsmodus"
-      },
-      "uiComponent": "picker",
-      "getable": true,
-      "setable": true,
-      "insights": true,
-      "uiQuickAction": true,
-      "values": [
-        {
-          "id": "auto",
-          "title": {
-            "en": "Auto",
-            "nl": "Automatisch"
-          }
-        },
-        {
-          "id": "cool",
-          "title": {
-            "en": "Cool",
-            "nl": "Koelen"
-          }
-        },
-        {
-          "id": "heat",
-          "title": {
-            "en": "Heat",
-            "nl": "Verwarmen"
-          }
-        },
-        {
-          "id": "dry",
-          "title": {
-            "en": "Dry",
-            "nl": "Drogen"
-          }
-        },
-        {
-          "id": "fan_only",
-          "title": {
-            "en": "Fan Only",
-            "nl": "Alleen Ventilator"
-          }
-        },
-        {
-          "id": "10_heating",
-          "title": {
-            "en": "Anti-Freeze (10°C)",
-            "nl": "Vorstbeveiliging (10°C)"
-          }
-        }
-      ]
     },
     "hon_rapid_mode": {
       "type": "boolean",
@@ -1219,51 +880,6 @@
         "en": "Sleep mode turned off",
         "nl": "Slaapmodus uitgeschakeld"
       }
-    },
-    "hon_swing_mode": {
-      "type": "enum",
-      "title": {
-        "en": "Swing",
-        "nl": "Zwenken"
-      },
-      "desc": {
-        "en": "The air swing direction",
-        "nl": "De luchtstroom zwenkrichting"
-      },
-      "uiComponent": "picker",
-      "getable": true,
-      "setable": true,
-      "insights": true,
-      "values": [
-        {
-          "id": "off",
-          "title": {
-            "en": "Off",
-            "nl": "Uit"
-          }
-        },
-        {
-          "id": "vertical",
-          "title": {
-            "en": "Vertical",
-            "nl": "Verticaal"
-          }
-        },
-        {
-          "id": "horizontal",
-          "title": {
-            "en": "Horizontal",
-            "nl": "Horizontaal"
-          }
-        },
-        {
-          "id": "both",
-          "title": {
-            "en": "Both",
-            "nl": "Beide"
-          }
-        }
-      ]
     }
   }
 }

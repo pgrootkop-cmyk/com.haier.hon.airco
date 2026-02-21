@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Reconnect to hOn</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f5f5f7;
+      color: #333;
+      padding: 12px;
+      line-height: 1.45;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    /* Header */
+    .hdr { text-align: center; margin-bottom: 4px; }
+    .hdr h2 { font-size: 17px; font-weight: 700; color: #1a1a1a; }
+    .hdr p  { font-size: 11.5px; color: #888; margin-top: 2px; line-height: 1.5; }
+
+    /* Step cards */
+    .step {
+      background: #fff;
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,.06);
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      transition: opacity .3s, box-shadow .3s;
+    }
+    .step.done  { opacity: .4; pointer-events: none; }
+    .step.done .num { background: #34c759; }
+    .num {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      background: #004ea2;
+      color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+      transition: background .3s;
+    }
+    .body { flex: 1; min-width: 0; }
+    .body h3 { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+    .body p  { font-size: 12px; color: #666; margin-bottom: 6px; }
+    .body p:last-child { margin-bottom: 0; }
+
+    /* Buttons */
+    .btn {
+      display: block; width: 100%;
+      padding: 10px;
+      font-size: 13px; font-weight: 600;
+      color: #fff; border: none; border-radius: 8px;
+      cursor: pointer;
+      transition: background .2s, transform .1s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn:active { transform: scale(.98); }
+    .btn:disabled { opacity: .35; cursor: default; transform: none; }
+    .btn-blue  { background: #004ea2; }
+    .btn-blue:hover:not(:disabled) { background: #003d82; }
+    .btn-green { background: #34c759; }
+    .btn-green:hover:not(:disabled) { background: #2db84d; }
+
+    /* Textarea */
+    textarea {
+      width: 100%; height: 48px;
+      padding: 8px 10px;
+      border: 2px solid #e5e5ea;
+      border-radius: 8px;
+      font-size: 11px;
+      font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
+      resize: none; color: #333;
+      transition: border-color .2s;
+      margin-bottom: 6px;
+    }
+    textarea:focus { outline: none; border-color: #004ea2; }
+    textarea.ok { border-color: #34c759; }
+
+    /* Help box */
+    .help-in {
+      margin-top: 6px; padding: 8px 10px;
+      background: #f5f5f7; border-radius: 6px;
+      font-size: 11.5px; line-height: 1.55; color: #555;
+    }
+    .help-in b { color: #333; }
+    .help-in p { margin-bottom: 4px; }
+    .help-in p:last-child { margin-bottom: 0; }
+
+    /* Status bar */
+    .st {
+      text-align: center; font-size: 12px; font-weight: 500;
+      padding: 8px 10px; border-radius: 8px;
+      display: none; margin-bottom: 6px;
+    }
+    .st.show  { display: block; }
+    .st.info  { background: #e8f0fe; color: #1a56db; }
+    .st.ok    { background: #e8f5e9; color: #2e7d32; }
+    .st.bad   { background: #fef2f2; color: #c62828; }
+
+    /* Spinner */
+    .sp {
+      display: inline-block; width: 12px; height: 12px;
+      border: 2px solid rgba(0,0,0,.12);
+      border-top-color: currentColor;
+      border-radius: 50%;
+      animation: sp .6s linear infinite;
+      vertical-align: -1px; margin-right: 4px;
+    }
+    @keyframes sp { to { transform: rotate(360deg); } }
+
+    .note {
+      font-size: 12px; font-weight: 500;
+      padding: 8px 10px; border-radius: 8px;
+      margin-bottom: 10px; text-align: center;
+      line-height: 1.45; display: none;
+    }
+    .note b { font-weight: 700; }
+    .note-warn { background: #fff3cd; color: #856404; }
+    .note-warn b { color: #664d03; }
+    code {
+      background: #f0f0f5; padding: 1px 4px; border-radius: 3px;
+      font-size: 11px;
+      font-family: 'SF Mono', SFMono-Regular, Menlo, Consolas, monospace;
+    }
+    kbd {
+      background: #eee; border: 1px solid #ddd; border-radius: 3px;
+      padding: 0 4px; font-size: 11px; font-family: inherit;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="hdr">
+    <h2 data-i="title">Reconnect to hOn</h2>
+    <p data-i="subtitle">Re-authenticate your hOn account to restore the connection. This requires a desktop browser.</p>
+  </div>
+
+  <div class="note note-warn" id="noteWarn">
+    <p style="font-size:14px; margin-bottom:8px;" data-i="mobileWarn1">This repair requires a <b>desktop browser</b> with Developer Tools to copy a redirect URL.</p>
+    <p style="font-size:13px;" data-i="mobileWarn2">Open <b>https://my.homey.app/</b> on a computer and repair from there.</p>
+  </div>
+
+  <!-- Step 1 -->
+  <div class="step" id="s1">
+    <div class="num" id="n1">1</div>
+    <div class="body">
+      <h3 data-i="s1Title">Copy the login link</h3>
+      <p data-i="s1Desc">Copy the hOn login link to your clipboard.</p>
+      <button class="btn btn-blue" id="copyBtn" data-i="s1Btn">Copy Login Link</button>
+    </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="step" id="s2">
+    <div class="num">2</div>
+    <div class="body">
+      <h3 data-i="s2Title">Sign in to hOn</h3>
+      <p data-i="s2Desc">Open a <b>new tab</b>, paste the link in the address bar and sign in with your hOn account.</p>
+    </div>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="step" id="s3">
+    <div class="num">3</div>
+    <div class="body">
+      <h3 data-i="s3Title">Find the token in Developer Tools</h3>
+      <p data-i="s3Desc">After signing in you'll see a blank page &mdash; that's normal. The URL we need is in the browser's <b>Developer Tools</b>.</p>
+      <div class="help-in">
+        <p data-i="s3h1"><b>1.</b> Press <kbd>F12</kbd> (or <kbd>&#8984;&#8997;I</kbd> on Mac) to open Developer Tools</p>
+        <p data-i="s3h2"><b>2.</b> Click the <b>Console</b> tab</p>
+        <p data-i="s3h3"><b>3.</b> Find the red error about <code>hon://</code></p>
+        <p data-i="s3h4"><b>4.</b> Right-click the <code>hon://</code> link &rarr; <b>Copy link address</b></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 4 -->
+  <div class="step" id="s4">
+    <div class="num">4</div>
+    <div class="body">
+      <h3 data-i="s4Title">Paste &amp; reconnect</h3>
+      <textarea id="url" data-i-placeholder="s4Placeholder"></textarea>
+      <button class="btn btn-green" id="goBtn" disabled data-i="s4Btn">Reconnect</button>
+    </div>
+  </div>
+
+  <div class="st" id="st"></div>
+
+<script>
+  /* ── i18n ── */
+  var T = {
+    en: {
+      title: 'Reconnect to hOn',
+      subtitle: 'Re-authenticate your hOn account to restore the connection. This requires a desktop browser.',
+      mobileWarn1: 'This repair requires a <b>desktop browser</b> with Developer Tools to copy a redirect URL.',
+      mobileWarn2: 'Open <b>https://my.homey.app/</b> on a computer and repair from there.',
+      s1Title: 'Copy the login link',
+      s1Desc: 'Copy the hOn login link to your clipboard.',
+      s1Btn: 'Copy Login Link',
+      s1Copied: 'Copied!',
+      s1Again: 'Copy Again',
+      s2Title: 'Sign in to hOn',
+      s2Desc: 'Open a <b>new tab</b>, paste the link in the address bar and sign in with your hOn account.',
+      s3Title: 'Find the token in Developer Tools',
+      s3Desc: 'After signing in you\'ll see a blank page \u2014 that\'s normal. The URL we need is in the browser\'s <b>Developer Tools</b>.',
+      s3h1: '<b>1.</b> Press <kbd>F12</kbd> (or <kbd>\u2318\u2325I</kbd> on Mac) to open Developer Tools',
+      s3h2: '<b>2.</b> Click the <b>Console</b> tab',
+      s3h3: '<b>3.</b> Find the red error about <code>hon://</code>',
+      s3h4: '<b>4.</b> Right-click the <code>hon://</code> link \u2192 <b>Copy link address</b>',
+      s4Title: 'Paste & reconnect',
+      s4Placeholder: 'Paste the hon:// URL here...',
+      s4Btn: 'Reconnect',
+      stConnecting: '<span class="sp"></span> Reconnecting to hOn\u2026',
+      stConnected: 'Reconnected! Your device will resume shortly.',
+      stFailed: 'Reconnection failed: ',
+      stNoTokens: 'No tokens found. Make sure you copied the full URL starting with <code>hon://</code>',
+      stNoHomey: 'Homey not connected. Close this window and try again.',
+      stCopyFail: 'Could not copy. Long-press the button to copy manually.',
+    },
+    nl: {
+      title: 'Opnieuw verbinden met hOn',
+      subtitle: 'Verifieer je hOn-account opnieuw om de verbinding te herstellen. Dit vereist een desktopbrowser.',
+      mobileWarn1: 'Deze reparatie vereist een <b>desktopbrowser</b> met Developer Tools om een redirect-URL te kopi\u00ebren.',
+      mobileWarn2: 'Open <b>https://my.homey.app/</b> op een computer en repareer daar.',
+      s1Title: 'Kopieer de loginlink',
+      s1Desc: 'Kopieer de hOn-loginlink naar je klembord.',
+      s1Btn: 'Kopieer loginlink',
+      s1Copied: 'Gekopieerd!',
+      s1Again: 'Opnieuw kopi\u00ebren',
+      s2Title: 'Log in bij hOn',
+      s2Desc: 'Open een <b>nieuw tabblad</b>, plak de link in de adresbalk en log in met je hOn-account.',
+      s3Title: 'Token ophalen uit Developer Tools',
+      s3Desc: 'Na het inloggen zie je een leeg scherm \u2014 dat is normaal. De URL die we nodig hebben staat in de <b>Developer Tools</b> van je browser.',
+      s3h1: '<b>1.</b> Druk op <kbd>F12</kbd> (of <kbd>\u2318\u2325I</kbd> op Mac) om Developer Tools te openen',
+      s3h2: '<b>2.</b> Klik op het tabblad <b>Console</b>',
+      s3h3: '<b>3.</b> Zoek de rode foutmelding over <code>hon://</code>',
+      s3h4: '<b>4.</b> Klik met rechts op de <code>hon://</code> link \u2192 <b>Linkadres kopi\u00ebren</b>',
+      s4Title: 'Plakken & opnieuw verbinden',
+      s4Placeholder: 'Plak de hon:// URL hier...',
+      s4Btn: 'Opnieuw verbinden',
+      stConnecting: '<span class="sp"></span> Opnieuw verbinden met hOn\u2026',
+      stConnected: 'Opnieuw verbonden! Je apparaat wordt zo hervat.',
+      stFailed: 'Opnieuw verbinden mislukt: ',
+      stNoTokens: 'Geen tokens gevonden. Zorg dat je de volledige URL hebt gekopieerd die begint met <code>hon://</code>',
+      stNoHomey: 'Homey niet verbonden. Sluit dit venster en probeer opnieuw.',
+      stCopyFail: 'Kopi\u00ebren mislukt. Houd de knop ingedrukt om handmatig te kopi\u00ebren.',
+    }
+  };
+
+  var lang = (navigator.language || '').substring(0, 2) === 'nl' ? 'nl' : 'en';
+
+  function applyLang() {
+    var t = T[lang];
+    document.querySelectorAll('[data-i]').forEach(function(el) {
+      var key = el.getAttribute('data-i');
+      if (t[key]) el.innerHTML = t[key];
+    });
+    document.querySelectorAll('[data-i-placeholder]').forEach(function(el) {
+      var key = el.getAttribute('data-i-placeholder');
+      if (t[key]) el.placeholder = t[key];
+    });
+  }
+
+  applyLang();
+
+  /* ── Device detection ── */
+  var isMobile = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  if (isMobile) {
+    document.getElementById('noteWarn').style.display = 'block';
+    ['s1','s2','s3','s4'].forEach(function(id) {
+      var el = document.getElementById(id);
+      el.style.opacity = '0.3';
+      el.style.pointerEvents = 'none';
+      el.style.userSelect = 'none';
+    });
+  }
+
+  /* ── OAuth URL ── */
+  var OAUTH_URL = 'https://account2.hon-smarthome.com/services/oauth2/authorize/expid_Login?' +
+    'response_type=token+id_token' +
+    '&client_id=3MVG9QDx8IX8nP5T2Ha8ofvlmjLZl5L_gvfbT9.HJvpHGKoAS_dcMN8LYpTSYeVFCraUnV.2Ag1Ki7m4znVO6' +
+    '&redirect_uri=' + encodeURIComponent('hon://mobilesdk/detect/oauth/done') +
+    '&display=touch' +
+    '&scope=' + encodeURIComponent('api openid refresh_token web') +
+    '&nonce=' + Date.now() +
+    '&state=' + Math.random().toString(36).substring(7);
+
+  /* ── Homey bridge ── */
+  var hApi = null;
+  function initHomey(h) {
+    hApi = h;
+    hApi.emit('get_language', null, function(err, homeyLang) {
+      if (!err && homeyLang && T[homeyLang]) {
+        lang = homeyLang;
+        applyLang();
+      }
+    });
+    hApi.ready();
+  }
+  function onHomeyReady(Homey) { initHomey(Homey); }
+  if (typeof Homey !== 'undefined') { initHomey(Homey); }
+
+  /* ── Token extraction ── */
+  function extractTokens(text) {
+    var m = text.match(/(?:hon|https?|hoover|candy|rosieres):\/\/[^\s'"<>]*#[^\s'"<>]*access_token=[^\s'"<>]*/);
+    if (m) return parseFrag(m[0]);
+    var f = text.match(/#[^\s'"<>]*access_token=[^\s'"<>]*/);
+    if (f) return parseFrag('x://x' + f[0]);
+    var at = text.match(/access_token=([^&\s'"<>]+)/);
+    var id = text.match(/id_token=([^&\s'"<>]+)/);
+    if (at && id) {
+      var rt = text.match(/refresh_token=([^&\s'"<>]+)/);
+      return { accessToken: decodeURIComponent(at[1]), idToken: decodeURIComponent(id[1]), refreshToken: rt ? decodeURIComponent(rt[1]) : null };
+    }
+    return null;
+  }
+
+  function parseFrag(url) {
+    var i = url.indexOf('#');
+    if (i === -1) return null;
+    var p = new URLSearchParams(url.substring(i + 1));
+    var a = p.get('access_token'), t = p.get('id_token');
+    if (a && t) return { accessToken: a, idToken: t, refreshToken: p.get('refresh_token') };
+    return null;
+  }
+
+  /* ── DOM refs ── */
+  var copyBtn   = document.getElementById('copyBtn');
+  var urlField  = document.getElementById('url');
+  var goBtn     = document.getElementById('goBtn');
+  var stEl      = document.getElementById('st');
+  var tokens    = null;
+
+  function status(msg, cls) { stEl.innerHTML = msg; stEl.className = 'st show ' + cls; }
+  function clearSt()        { stEl.className = 'st'; }
+
+  /* ── Step 1: Copy link ── */
+  copyBtn.addEventListener('click', function () {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(OAUTH_URL).then(copied, fallback);
+    } else {
+      fallback();
+    }
+  });
+
+  function copied() {
+    copyBtn.textContent = T[lang].s1Copied;
+    copyBtn.className = 'btn btn-green';
+    document.getElementById('s1').classList.add('done');
+    document.getElementById('n1').textContent = '\u2713';
+    setTimeout(function () { urlField.focus(); }, 200);
+    setTimeout(function () {
+      copyBtn.textContent = T[lang].s1Again;
+      copyBtn.className = 'btn btn-blue';
+      document.getElementById('s1').classList.remove('done');
+    }, 6000);
+  }
+
+  function fallback() {
+    var ta = document.createElement('textarea');
+    ta.value = OAUTH_URL;
+    ta.style.cssText = 'position:fixed;left:-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); copied(); }
+    catch (e) { status(T[lang].stCopyFail, 'bad'); }
+    document.body.removeChild(ta);
+  }
+
+  /* ── Step 4: Paste & reconnect ── */
+  urlField.addEventListener('input', check);
+  urlField.addEventListener('paste', function () { setTimeout(check, 50); });
+
+  function check() {
+    var v = urlField.value.trim();
+    tokens = extractTokens(v);
+    if (tokens) {
+      urlField.classList.add('ok');
+      goBtn.disabled = false;
+      clearSt();
+      submit();
+    } else {
+      urlField.classList.remove('ok');
+      goBtn.disabled = !v;
+    }
+  }
+
+  goBtn.addEventListener('click', function () {
+    if (!tokens) {
+      tokens = extractTokens(urlField.value.trim());
+      if (tokens) submit();
+      else status(T[lang].stNoTokens, 'bad');
+    } else {
+      submit();
+    }
+  });
+
+  urlField.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') { e.preventDefault(); goBtn.click(); }
+  });
+
+  function submit() {
+    if (!tokens) return;
+    if (!hApi) { status(T[lang].stNoHomey, 'bad'); return; }
+    status(T[lang].stConnecting, 'info');
+    goBtn.disabled = true;
+    urlField.disabled = true;
+
+    hApi.emit('oauth_tokens', tokens, function (err) {
+      if (err) {
+        status(T[lang].stFailed + (err.message || err), 'bad');
+        goBtn.disabled = false;
+        urlField.disabled = false;
+        return;
+      }
+      status(T[lang].stConnected, 'ok');
+      document.getElementById('s4').classList.add('done');
+      setTimeout(function () { hApi.done(); }, 1500);
+    });
+  }
+</script>
+</body>
+</html>

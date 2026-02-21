@@ -2,7 +2,7 @@
 
 const Homey = require('homey');
 
-// Mapping from hOn machMode values to Homey HVAC modes
+// Mapping from hOn machMode values to Homey thermostat modes
 const HON_TO_HVAC_MODE = {
   0: 'auto',
   1: 'cool',
@@ -22,8 +22,8 @@ const HVAC_MODE_TO_HON = {
   '10_heating': 4, // Uses heat mode with 10degreeHeatingStatus
 };
 
-// Mapping from hOn windSpeed values to Homey fan speeds
-const HON_TO_FAN_SPEED = {
+// Mapping from hOn windSpeed values to Homey fan modes
+const HON_TO_FAN_MODE = {
   1: 'high',
   2: 'medium',
   3: 'low',
@@ -31,7 +31,7 @@ const HON_TO_FAN_SPEED = {
   5: 'auto',
 };
 
-const FAN_SPEED_TO_HON = {
+const FAN_MODE_TO_HON = {
   'high': 1,
   'medium': 2,
   'low': 3,
@@ -100,6 +100,9 @@ class AirconDevice extends Homey.Device {
     // Skip polls until this timestamp (prevents stale state overwriting commands)
     this._skipPollUntil = 0;
 
+    // Migrate capabilities from old custom to system capabilities
+    await this._migrateCapabilities();
+
     // Register capability listeners
     this._registerCapabilityListeners();
 
@@ -108,6 +111,28 @@ class AirconDevice extends Homey.Device {
 
     // Fetch command definitions for mandatory parameters
     this._fetchCommandDefinitions();
+  }
+
+  /**
+   * Migrate from old custom capabilities to system capabilities
+   * @private
+   */
+  async _migrateCapabilities() {
+    const migrations = [
+      { old: 'hon_hvac_mode', new: 'thermostat_mode' },
+      { old: 'hon_fan_speed', new: 'fan_mode' },
+      { old: 'hon_swing_mode', new: 'swing_mode' },
+    ];
+
+    for (const { old: oldCap, new: newCap } of migrations) {
+      if (this.hasCapability(oldCap)) {
+        this.log(`Migrating capability ${oldCap} → ${newCap}`);
+        await this.removeCapability(oldCap).catch(this.error);
+      }
+      if (!this.hasCapability(newCap)) {
+        await this.addCapability(newCap).catch(this.error);
+      }
+    }
   }
 
   /**
@@ -186,26 +211,26 @@ class AirconDevice extends Homey.Device {
       await this._setTargetTemperature(value);
     });
 
-    // HVAC Mode
-    if (this.hasCapability('hon_hvac_mode')) {
-      this.registerCapabilityListener('hon_hvac_mode', async (value) => {
-        this.log(`Setting hon_hvac_mode to: ${value}`);
+    // Thermostat Mode (system capability, replaces hon_hvac_mode)
+    if (this.hasCapability('thermostat_mode')) {
+      this.registerCapabilityListener('thermostat_mode', async (value) => {
+        this.log(`Setting thermostat_mode to: ${value}`);
         await this._setHvacMode(value);
       });
     }
 
-    // Fan Speed
-    if (this.hasCapability('hon_fan_speed')) {
-      this.registerCapabilityListener('hon_fan_speed', async (value) => {
-        this.log(`Setting hon_fan_speed to: ${value}`);
+    // Fan Mode (system capability, replaces hon_fan_speed)
+    if (this.hasCapability('fan_mode')) {
+      this.registerCapabilityListener('fan_mode', async (value) => {
+        this.log(`Setting fan_mode to: ${value}`);
         await this._setFanSpeed(value);
       });
     }
 
-    // Swing Mode
-    if (this.hasCapability('hon_swing_mode')) {
-      this.registerCapabilityListener('hon_swing_mode', async (value) => {
-        this.log(`Setting hon_swing_mode to: ${value}`);
+    // Swing Mode (system capability, replaces hon_swing_mode)
+    if (this.hasCapability('swing_mode')) {
+      this.registerCapabilityListener('swing_mode', async (value) => {
+        this.log(`Setting swing_mode to: ${value}`);
         await this._setSwingMode(value);
       });
     }
@@ -290,7 +315,7 @@ class AirconDevice extends Homey.Device {
 
     if (!api || !api.isAuthenticated()) {
       this.log('API not available, skipping poll');
-      await this.setUnavailable('Not authenticated');
+      await this.setUnavailable('Not authenticated').catch(this.error);
       return;
     }
 
@@ -312,9 +337,9 @@ class AirconDevice extends Homey.Device {
     } catch (error) {
       this.error('Failed to poll device state:', error.message);
 
-      // Mark device as unavailable after multiple failures
-      if (error.message.includes('auth') || error.message.includes('401')) {
-        await this.setUnavailable('Authentication failed');
+      // Mark device as unavailable after auth failures
+      if (error.message.includes('auth') || error.message.includes('401') || error.message.includes('re-authenticate')) {
+        await this.setUnavailable('Authentication failed. Use Repair to reconnect.').catch(this.error);
       }
     }
   }
@@ -372,38 +397,30 @@ class AirconDevice extends Homey.Device {
       }
     }
 
-    // HVAC Mode (check 10-degree heating first)
-    if (state.machMode !== undefined && this.hasCapability('hon_hvac_mode')) {
-      const prevMode = this.getCapabilityValue('hon_hvac_mode');
-      const is10Heating = Number(this._extractValue(state['10degreeHeatingStatus'])) === 1;
+    // Thermostat Mode (check 10-degree heating first)
+    if (state.machMode !== undefined && this.hasCapability('thermostat_mode')) {
+      const is10HeatingMode = Number(this._extractValue(state['10degreeHeatingStatus'])) === 1;
       let newMode;
-      if (is10Heating) {
+      if (is10HeatingMode) {
         newMode = '10_heating';
       } else {
         const modeValue = Number(this._extractValue(state.machMode));
         newMode = HON_TO_HVAC_MODE[modeValue] || 'auto';
       }
-      await this.setCapabilityValue('hon_hvac_mode', newMode).catch(this.error);
-      if (newMode !== prevMode) {
-        this.homey.flow.getDeviceTriggerCard('hon_hvac_mode_changed')
-          .trigger(this, { mode: newMode }).catch(this.error);
-      }
+      await this.setCapabilityValue('thermostat_mode', newMode).catch(this.error);
+      // System capability auto-fires thermostat_mode_changed trigger
     }
 
-    // Fan Speed
-    if (state.windSpeed !== undefined && this.hasCapability('hon_fan_speed')) {
-      const prevSpeed = this.getCapabilityValue('hon_fan_speed');
+    // Fan Mode
+    if (state.windSpeed !== undefined && this.hasCapability('fan_mode')) {
       const speedValue = Number(this._extractValue(state.windSpeed));
-      const speed = HON_TO_FAN_SPEED[speedValue] || 'auto';
-      await this.setCapabilityValue('hon_fan_speed', speed).catch(this.error);
-      if (speed !== prevSpeed) {
-        this.homey.flow.getDeviceTriggerCard('hon_fan_speed_changed')
-          .trigger(this, { speed }).catch(this.error);
-      }
+      const mode = HON_TO_FAN_MODE[speedValue] || 'auto';
+      await this.setCapabilityValue('fan_mode', mode).catch(this.error);
+      // System capability auto-fires fan_mode_changed trigger
     }
 
     // Swing Mode
-    if (this.hasCapability('hon_swing_mode')) {
+    if (this.hasCapability('swing_mode')) {
       const horizontal = Number(this._extractValue(state.windDirectionHorizontal));
       const vertical = Number(this._extractValue(state.windDirectionVertical));
       let swingMode = 'off';
@@ -416,7 +433,8 @@ class AirconDevice extends Homey.Device {
         swingMode = 'vertical';
       }
 
-      await this.setCapabilityValue('hon_swing_mode', swingMode).catch(this.error);
+      await this.setCapabilityValue('swing_mode', swingMode).catch(this.error);
+      // System capability auto-fires swing_mode_changed trigger
     }
 
     // Eco Pilot (humanSensingStatus)
@@ -464,7 +482,7 @@ class AirconDevice extends Homey.Device {
 
     if (value) {
       // Turn ON using startProgram with current mode
-      const currentMode = this.getCapabilityValue('hon_hvac_mode') || 'auto';
+      const currentMode = this.getCapabilityValue('thermostat_mode') || 'auto';
       const programName = HVAC_MODE_TO_PROGRAM[currentMode] || 'IOT_AUTO';
       const machMode = HVAC_MODE_TO_HON[currentMode] ?? 0;
       const params = { ...(this._mandatoryParams || {}) };
@@ -505,7 +523,7 @@ class AirconDevice extends Homey.Device {
     if (!api) throw new Error('API not available');
 
     // Clamp to 16-30 for normal modes (10 is only valid in anti-freeze)
-    const currentMode = this.getCapabilityValue('hon_hvac_mode') || 'auto';
+    const currentMode = this.getCapabilityValue('thermostat_mode') || 'auto';
     if (currentMode === '10_heating') {
       this.log('Temperature cannot be changed in anti-freeze mode');
       throw new Error('Temperature is fixed at 10°C in anti-freeze mode');
@@ -515,8 +533,8 @@ class AirconDevice extends Homey.Device {
 
     // Get current values
     const machMode = HVAC_MODE_TO_HON[currentMode] ?? 0;
-    const currentFanSpeed = this.getCapabilityValue('hon_fan_speed') || 'auto';
-    const windSpeed = FAN_SPEED_TO_HON[currentFanSpeed] ?? 4;
+    const currentFanMode = this.getCapabilityValue('fan_mode') || 'auto';
+    const windSpeed = FAN_MODE_TO_HON[currentFanMode] ?? 4;
 
     // Start with all mandatory parameters
     const params = { ...(this._mandatoryParams || {}) };
@@ -582,8 +600,8 @@ class AirconDevice extends Homey.Device {
     // Use startProgram to change mode (ensures 10degreeHeating is turned off)
     let currentTemp = this.getCapabilityValue('target_temperature') || 16;
     if (currentTemp < 16) currentTemp = 16; // Reset from anti-freeze display temp
-    const currentFanSpeed = this.getCapabilityValue('hon_fan_speed') || 'auto';
-    const windSpeed = FAN_SPEED_TO_HON[currentFanSpeed] ?? 5;
+    const currentFanMode = this.getCapabilityValue('fan_mode') || 'auto';
+    const windSpeed = FAN_MODE_TO_HON[currentFanMode] ?? 5;
     const programName = HVAC_MODE_TO_PROGRAM[value] || 'IOT_AUTO';
 
     const params = { ...(this._mandatoryParams || {}) };
@@ -621,14 +639,14 @@ class AirconDevice extends Homey.Device {
     const api = this._getApi();
     if (!api) throw new Error('API not available');
 
-    const windSpeed = FAN_SPEED_TO_HON[value];
+    const windSpeed = FAN_MODE_TO_HON[value];
     if (windSpeed === undefined) {
-      throw new Error(`Unknown fan speed: ${value}`);
+      throw new Error(`Unknown fan mode: ${value}`);
     }
 
     // Get current values
     const currentTemp = this.getCapabilityValue('target_temperature') || 16;
-    const currentMode = this.getCapabilityValue('hon_hvac_mode') || 'auto';
+    const currentMode = this.getCapabilityValue('thermostat_mode') || 'auto';
     const machMode = HVAC_MODE_TO_HON[currentMode] ?? 0;
 
     // Start with all mandatory parameters
@@ -690,10 +708,10 @@ class AirconDevice extends Homey.Device {
 
     // Get current values
     const currentTemp = this.getCapabilityValue('target_temperature') || 16;
-    const currentMode = this.getCapabilityValue('hon_hvac_mode') || 'auto';
+    const currentMode = this.getCapabilityValue('thermostat_mode') || 'auto';
     const machMode = HVAC_MODE_TO_HON[currentMode] ?? 0;
-    const currentFanSpeed = this.getCapabilityValue('hon_fan_speed') || 'auto';
-    const windSpeed = FAN_SPEED_TO_HON[currentFanSpeed] ?? 4;
+    const currentFanMode = this.getCapabilityValue('fan_mode') || 'auto';
+    const windSpeed = FAN_MODE_TO_HON[currentFanMode] ?? 4;
 
     // Start with all mandatory parameters
     const params = { ...(this._mandatoryParams || {}) };
@@ -732,12 +750,12 @@ class AirconDevice extends Homey.Device {
     if (!api) throw new Error('API not available');
 
     // Build params from current state
-    const currentMode = this.getCapabilityValue('hon_hvac_mode') || 'auto';
+    const currentMode = this.getCapabilityValue('thermostat_mode') || 'auto';
     const machMode = HVAC_MODE_TO_HON[currentMode] ?? 0;
     let currentTemp = this.getCapabilityValue('target_temperature') || 16;
     if (currentTemp < 16) currentTemp = 16;
-    const currentFanSpeed = this.getCapabilityValue('hon_fan_speed') || 'auto';
-    const windSpeed = FAN_SPEED_TO_HON[currentFanSpeed] ?? 5;
+    const currentFanMode = this.getCapabilityValue('fan_mode') || 'auto';
+    const windSpeed = FAN_MODE_TO_HON[currentFanMode] ?? 5;
 
     const params = { ...(this._mandatoryParams || {}) };
     params.onOffStatus = this.getCapabilityValue('onoff') ? '1' : '0';
