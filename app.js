@@ -51,10 +51,21 @@ class HaierHonApp extends Homey.App {
       });
 
       if (accessToken && idToken) {
-        // We have all tokens — set them and exchange for Cognito token
+        // Try using stored access/id tokens first
         this.api.setTokens(accessToken, idToken, refreshToken);
-        await this.api.initializeWithTokens();
-        this.log('API authenticated with stored tokens');
+        try {
+          await this.api.initializeWithTokens();
+          this.log('API authenticated with stored tokens');
+        } catch (initError) {
+          // Stored tokens likely expired — fall back to refresh token
+          this.log('Stored tokens failed (likely expired), trying refresh...', initError.message);
+          if (refreshToken) {
+            await this.api._safeRefresh();
+            this.log('API authenticated via refresh token (fallback)');
+          } else {
+            throw initError;
+          }
+        }
       } else if (refreshToken) {
         // Only refresh token available — use it to get fresh access/id/cognito tokens
         this.log('Only refresh token stored, refreshing...');
@@ -64,10 +75,13 @@ class HaierHonApp extends Homey.App {
     } catch (error) {
       this.error('Failed to initialize API:', error.message);
 
-      // Don't clear tokens — the refresh token may still be valid.
-      // The device will retry on next poll via _ensureAuthenticated().
-      // If everything fails, the user can Repair.
-      this.api = null;
+      // Keep the API instance alive if we have a refresh token — _ensureAuthenticated()
+      // in _apiRequest will retry the refresh on the next poll cycle.
+      if (!refreshToken) {
+        this.api = null;
+      } else {
+        this.log('Keeping API instance alive for refresh retry on next poll');
+      }
     }
   }
 

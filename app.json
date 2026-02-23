@@ -508,6 +508,12 @@
             "nl": "Buitentemperatuur"
           }
         },
+        "onoff": {
+          "title": {
+            "en": "Power",
+            "nl": "Aan/Uit"
+          }
+        },
         "thermostat_mode": {
           "values": [
             {
