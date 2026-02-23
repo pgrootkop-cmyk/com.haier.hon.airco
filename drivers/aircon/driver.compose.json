@@ -46,6 +46,12 @@
         "nl": "Buitentemperatuur"
       }
     },
+    "onoff": {
+      "title": {
+        "en": "Power",
+        "nl": "Aan/Uit"
+      }
+    },
     "thermostat_mode": {
       "values": [
         { "id": "auto", "title": { "en": "Auto", "nl": "Automatisch" } },

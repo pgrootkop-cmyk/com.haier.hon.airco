@@ -91,9 +91,6 @@ class AirconDevice extends Homey.Device {
 
     this.log(`Device ID (MAC): ${this.deviceId}, Appliance ID: ${this.applianceId}`);
 
-    // Reference to the API
-    this._api = null;
-
     // Polling timer
     this._pollTimer = null;
 
@@ -257,15 +254,13 @@ class AirconDevice extends Homey.Device {
   }
 
   /**
-   * Get the API instance
+   * Get the API instance (always fresh from app — never cache, because repair
+   * on any device replaces the shared HonApi instance in app.js)
    * @returns {HonApi|null}
    * @private
    */
   _getApi() {
-    if (!this._api) {
-      this._api = this.homey.app.getApi();
-    }
-    return this._api;
+    return this.homey.app.getApi();
   }
 
   /**
@@ -311,13 +306,26 @@ class AirconDevice extends Homey.Device {
       return;
     }
 
-    const api = this._getApi();
+    let api = this._getApi();
 
-    if (!api || !api.isAuthenticated()) {
-      this.log('API not available, skipping poll');
-      await this.setUnavailable('Not authenticated').catch(this.error);
-      return;
+    if (!api) {
+      // API not created yet — try re-initializing (may recover via refresh token)
+      this.log('API not available, attempting re-initialization...');
+      try {
+        await this.homey.app._initializeApi();
+        api = this._getApi();
+      } catch (e) {
+        this.error('Re-initialization failed:', e.message);
+      }
+      if (!api) {
+        await this.setUnavailable('Not authenticated. Use Repair to reconnect.').catch(this.error);
+        return;
+      }
     }
+
+    // Don't check isAuthenticated() here — let _apiRequest handle refresh via
+    // _ensureAuthenticated(). That way expired tokens trigger a refresh attempt
+    // instead of giving up immediately.
 
     try {
       const state = await api.getApplianceState(this.deviceId);
@@ -337,8 +345,8 @@ class AirconDevice extends Homey.Device {
     } catch (error) {
       this.error('Failed to poll device state:', error.message);
 
-      // Mark device as unavailable after auth failures
-      if (error.message.includes('auth') || error.message.includes('401') || error.message.includes('re-authenticate')) {
+      // Mark device as unavailable after unrecoverable auth failures
+      if (error.message.includes('re-authenticate') || error.message.includes('No refresh token')) {
         await this.setUnavailable('Authentication failed. Use Repair to reconnect.').catch(this.error);
       }
     }

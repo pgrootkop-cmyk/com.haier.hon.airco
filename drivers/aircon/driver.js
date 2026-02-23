@@ -153,7 +153,9 @@ class AirconDriver extends Homey.Driver {
   }
 
   /**
-   * onRepair is called when repair is started
+   * onRepair is called when repair is started.
+   * Auth is centralized in app.js — repairing one device fixes ALL devices
+   * since they share the same hOn account/API instance.
    */
   onRepair(session, device) {
     session.setHandler('disconnect', async () => {
@@ -170,18 +172,22 @@ class AirconDriver extends Homey.Driver {
       this.log('Received OAuth tokens for repair');
 
       try {
-        const api = new HonApi({
-          log: this.log.bind(this),
-          error: this.error.bind(this),
-        });
-
-        api.setTokens(tokens.accessToken, tokens.idToken, tokens.refreshToken);
+        // Update shared tokens in app.js (creates new HonApi instance)
         await this.homey.app.setTokens(tokens.accessToken, tokens.idToken, tokens.refreshToken);
 
-        // Reinitialize the device
-        await device.onInit();
+        // Reinitialize ALL devices of this driver (they share the same account)
+        const devices = this.getDevices();
+        this.log(`Repair: reinitializing ${devices.length} device(s)...`);
+        for (const dev of devices) {
+          try {
+            await dev.setAvailable();
+            this.log(`Repair: ${dev.getName()} marked available`);
+          } catch (e) {
+            this.error(`Repair: failed to restore ${dev.getName()}:`, e.message);
+          }
+        }
 
-        this.log('Repair successful');
+        this.log('Repair successful — all devices restored');
         return true;
       } catch (error) {
         this.error('Repair login failed:', error.message);
