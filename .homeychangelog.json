@@ -14,5 +14,9 @@
   },
   "0.0.5": {
     "en": "fix icon"
+  },
+  "0.0.6": {
+    "en": "Mobile detection warning is now passive — pairing form stays usable on devices falsely detected as mobile",
+    "nl": "Mobiele detectiewaarschuwing is nu passief — het koppelformulier blijft bruikbaar op apparaten die onterecht als mobiel worden gedetecteerd"
   }
 }

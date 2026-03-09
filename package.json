@@ -1,6 +1,6 @@
 {
   "name": "com.haier.hon.airco",
-  "version": "0.0.1",
+  "version": "0.0.6",
   "description": "Control Haier Air Conditioners via the hOn cloud API",
   "main": "app.js",
   "scripts": {

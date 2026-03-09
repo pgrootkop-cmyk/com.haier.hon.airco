@@ -273,12 +273,6 @@
   var isMobile = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   if (isMobile) {
     document.getElementById('noteWarn').style.display = 'block';
-    ['s1','s2','s3','s4'].forEach(function(id) {
-      var el = document.getElementById(id);
-      el.style.opacity = '0.3';
-      el.style.pointerEvents = 'none';
-      el.style.userSelect = 'none';
-    });
   }
 
   /* ── OAuth URL ── */
